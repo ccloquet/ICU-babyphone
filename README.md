@@ -47,25 +47,6 @@ modern babyphone to transmit monitoring alarms in ICU units
   ssid=babynet
   
 ~~~
- sudo cp /etc/network/interfaces /etc/network/interfaces-orig
- 
- sudo vim /etc/network/interfaces
- 
-    source-directory /etc/network/interfaces.d
-
-    auto lo
-    iface lo inet loopback
-
-    iface eth0 inet dhcp
-
-    auto wlan0
-    iface wlan0 inet static
-    address 172.16.0.200
-    netmask 255.255.255.0
-    wireless-channel 7
-    wireless-essid babynet
-    wireless-mode ad-hoc
-
- sudo systemctl stop dhcpcd.service    
-  ~~~
+  
+~~~
   
