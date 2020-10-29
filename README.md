@@ -34,6 +34,7 @@ modern babyphone to transmit monitoring alarms in ICU units
       - reboot
       - sudo apt-get upgrade
       - sudo apt-get update
+      - sudo apt-get install vim
     
 3. configure one pi as a wifi access point
 https://thepi.io/how-to-use-your-raspberry-pi-as-a-wireless-access-point/
