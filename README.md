@@ -35,9 +35,11 @@ modern babyphone to transmit monitoring alarms in ICU units
       - from now on, they can be accessed through the ethernet cable using {hostname}.local instead of raspberrypi.local
       - sudo apt-get update
       - sudo apt-get upgrade
-      - sudo apt-get install vim
-    
-3. configure an accesspoint 
+      - sudo apt-get install vim vlc ffmpeg
+
+3. share the internet connection of your computer through the etehernet cable (in network configuration, properties of the wifi, sharing, over Ethernet)
+
+4. on the babyserver configure an accesspoint 
  https://www.raspberrypi.org/documentation/configuration/wireless/access-point-routed.md
  (skip the routing section)
   - in the 192.168.4.* range (potential conflicts with home router ?)
@@ -45,6 +47,11 @@ modern babyphone to transmit monitoring alarms in ICU units
   (-> can presumably accept fixed ips outside this range)
   
   ssid=babynet
+  
+  on the babymike, configure the ssid for the network access
+  https://raspberrypihq.com/how-to-connect-your-raspberry-pi-to-wifi/
+  
+  
   
 ~~~
   
