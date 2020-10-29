@@ -41,7 +41,7 @@ https://thepi.io/how-to-use-your-raspberry-pi-as-a-wireless-access-point/
   - can accept fixed ips between 172.16.0.200 and 172.16.0.254
   - and provide adresses trough DHCP between 172.16.0.11 and 172.16.0.199
   
-  ``
+  ´´
   sudo apt-get install hostapd
   sudo apt-get install dnsmasq
   sudo systemctl stop hostapd
@@ -76,4 +76,4 @@ https://thepi.io/how-to-use-your-raspberry-pi-as-a-wireless-access-point/
   sudo vim /etc/default/hostapd
     DAEMON_CONF="/etc/hostapd/hostapd.conf"
   
-  sudo reboot now´´
+  sudo reboot now``
