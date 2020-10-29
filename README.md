@@ -49,7 +49,7 @@ https://thepi.io/how-to-use-your-raspberry-pi-as-a-wireless-access-point/
   sudo systemctl stop dnsmasq
   sudo vim /etc/dhcpcd.conf
     interface wlan0
-    static ip_address=192.168.0.10/24
+    static ip_address=172.16.0.10/24
     denyinterfaces eth0
     denyinterfaces wlan0
 
@@ -59,6 +59,7 @@ https://thepi.io/how-to-use-your-raspberry-pi-as-a-wireless-access-point/
     dhcp-range=172.16.0.11,172.16.0.199,255.255.255.0,24h
   
   sudo vim /etc/hostapd/hostapd.conf
+    country_code=BE
     interface=wlan0
     bridge=br0
     hw_mode=g
@@ -72,9 +73,13 @@ https://thepi.io/how-to-use-your-raspberry-pi-as-a-wireless-access-point/
     wpa_pairwise=TKIP
     rsn_pairwise=CCMP
     ssid=NETWORK
-    wpa_passphrase=PASSWORD
+    wpa_passphrase=myWPApassword
 
   sudo vim /etc/default/hostapd
     DAEMON_CONF="/etc/hostapd/hostapd.conf"
   
+  sudo systemctl unmask hostapd
+sudo systemctl enable hostapd
+
   sudo reboot now~~~
+  
