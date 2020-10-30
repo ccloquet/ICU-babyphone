@@ -156,9 +156,9 @@ _2. Basic install_
    - frequency
      - it seems that SoundAnalyze above can detect the pitch (https://github.com/ExCiteS/SLMPi/tree/master/SoundAnalyse-0.1.1)
      - but what if many frequencies? if they come rapidly on after another? -> to test
-     - otherwize: filtering:
+     - otherwise: filtering:
         - https://pypi.org/project/audiolazy/
-        - https://stackoverflow.com/questions/35764018/python-microphone-input-and-low-pass-filter-effect-realtime>
+        - https://stackoverflow.com/questions/35764018/python-microphone-input-and-low-pass-filter-effect-realtime
 
 
 10. send the BLE frames whe the sound meet these criteria 
