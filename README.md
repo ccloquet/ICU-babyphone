@@ -105,3 +105,15 @@ modern babyphone to transmit monitoring alarms in ICU units
     
     **from now on, you can listen on any device (rpi, smartphone, ...) the sounds heard by the babymikes**
     
+7. send BLE frames from the babymike
+    **goal: to send alarms to the server if the ffmpeg stream does not work**
+    
+8. receive BLE frames on the server
+
+9. send BLE frames when the sound meet some criteria
+   - volume
+   - frequency
+
+10. play/display the alarms
+  - on the server
+  - on a smartphone
