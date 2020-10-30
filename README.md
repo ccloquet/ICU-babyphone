@@ -61,26 +61,49 @@ modern babyphone to transmit monitoring alarms in ICU units
    le mini micro usb n'est pas génial...
    
  6. more advanced streaming (with compression)
-   on the mike: ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://192.168.4.1:1234
-   on the server: cvlc -A alsa,none --alsa-audio-device default rtp://192.168.4.1:1234
-   
-
-   
-   note: this works also
-    - listening to the radio:
+    
+   some tests 
+    - listening to the radio (works also in VLC)
       - cvlc -A alsa,none --alsa-audio-device default http://icecast.omroep.nl/radio2-bb-mp3.m3u
     
     - streaming on the babymike itself
        ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://localhost:1234
        cvlc -A alsa,none --alsa-audio-device default rtp://localhost:1234
+    
+    does this work?
+      on the mike: ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://192.168.4.1:1234
+      on the server: cvlc -A alsa,none --alsa-audio-device default rtp://192.168.4.1:1234
   
-  mkdir mkvserver/
-  cd mkvserver/
-  wget https://github.com/klaxa/mkvserver_mk2/archive/master.zip
-  unzip master.zip
-  cd mkvserver_mk2-master/
-  make
+    acting as a streaming server
+      using https://github.com/revmischa/rtsp-server
+      on the babyserver
+      
+      to install:
+~~~
+      sudo apt-get install libmoose-perl liburi-perl libmoosex-getopt-perl libsocket6-perl libanyevent-perl
+      sudo cpan AnyEvent::MPRPC::Client
+      sudo apt-get install git
+      cd
+      git clone https://github.com/revmischa/rtsp-server
+      cd rtsp-server
+      perl Makefile.PL
+      sudo make
+      sudo make test
+      sudo make install
+~~~
+     
+     to run :
+~~~   
+    cd /home/pi/mkvserver/mkvserver_mk2-master/rtsp-server
+    sudo ./rtsp-server.pl
 ~~~
   
+    on the babymike: 
 ~~~
-  
+    ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtsp rtsp://192.168.4.1:5545/babymike000
+~~~
+
+   on any device connected on the network
+    use, eg, VLC/VLC for Android/... to read the stream 
+    eg: cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000
+    
