@@ -2,6 +2,11 @@
 
 A modern babyphone to transmit ICU units monitoring alarms -- through Wifi/ethernet network -- to a smartphone
 
+Problem: during the covid-19 crisis, intensive care units (ICU) have been equipped with material that sound alarms, but that is not linked to a central desk. Or there is a central desk, but no nurse available to check it. Sometimes, babyphone are used, but they can not be carried by several people at a time, or they are too farto be hearf-d.
+
+There is therefore a need for a versatile and robust solution that can relay the alarms of any biomedical device.
+
+
 _0. Features_
 
  1. broadcasts the sounds of the alamrs inside the ICU room to any device outside (eg: a smartphone, a computer, ...)
