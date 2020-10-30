@@ -77,10 +77,9 @@ modern babyphone to transmit monitoring alarms in ICU units
     setting up a streaming server using https://github.com/revmischa/rtsp-server
       
       to install, on the babyserver:
-~~~
+      ~~~
       sudo apt-get install git libmoose-perl liburi-perl libmoosex-getopt-perl libsocket6-perl libanyevent-perl
       sudo cpan AnyEvent::MPRPC::Client
-      
       cd
       git clone https://github.com/revmischa/rtsp-server
       cd rtsp-server
@@ -88,17 +87,17 @@ modern babyphone to transmit monitoring alarms in ICU units
       sudo make
       sudo make test
       sudo make install
-~~~
+      ~~~   
      
-     to run, on the babyserver:
-~~~   
-    sudo -b /home/pi/mkvserver/mkvserver_mk2-master/rtsp-server/rtsp-server.pl
-~~~
+      to run, on the babyserver:
+      ~~~   
+      sudo -b /home/pi/mkvserver/mkvserver_mk2-master/rtsp-server/rtsp-server.pl
+      ~~~   
   
-    to run, on the babymike: 
-~~~
-    sudo -b ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtsp rtsp://192.168.4.1:5545/babymike000
-~~~
+      to run, on the babymike: 
+      ~~~
+      sudo -b ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtsp rtsp://192.168.4.1:5545/babymike000
+      ~~~
 
     then, on any device connected on the network
     use, eg, VLC/VLC for Android/... to read the stream 
