@@ -119,9 +119,22 @@ Features
     **from now on, you can listen on any device (rpi, smartphone, ...) the sounds heard by the babymikes**
     
 7. send BLE frames from the babymike
-    **goal: to send alarms to the server if the ffmpeg stream does not work**
+    **goal: to send alarms to the server, as a back up if the ffmpeg stream does not work**
+    sudo hciconfig hci0 up
+    sudo hciconfig hci0 leadv 3
+    sudo hcitool -i hci0 cmd 0x08 0x0008 1c 02 01 06 03 03 aa fe 14 16 aa fe 10 00 02 63 69 72 63 75 69 74 64 69 67 65 73 74 07 00 00 00
     
 8. receive BLE frames on the server
+      **goal: on receiving a particular UUID, sound an alarm (may be a gentle music)/show something on the screen**
+      uses https://github.com/singaCapital/BLE-Beacon-Scanner
+      ~~~
+      sudo apt-get install python3-pip python3-dev ipython3 bluetooth libbluetooth-dev
+      sudo pip3 install pybluez
+      cd
+      git clone https://github.com/singaCapital/BLE-Beacon-Scanner.git
+
+      sudo python3 /home/pi/BLE-Beacon-Scanner/BeaconScanner.py
+
 
 9. send BLE frames when the sound meet some criteria
    - volume
