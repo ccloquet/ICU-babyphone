@@ -120,9 +120,14 @@ Features
     
 7. send BLE frames from the babymike
     **goal: to send alarms to the server, as a back up if the ffmpeg stream does not work**
+    https://medium.com/@bhargavshah2011/converting-raspberry-pi-3-into-beacon-f01b3169e12f
+    https://pimylifeup.com/raspberry-pi-ibeacon/
+
     sudo hciconfig hci0 up
     sudo hciconfig hci0 leadv 3
     sudo hcitool -i hci0 cmd 0x08 0x0008 1c 02 01 06 03 03 aa fe 14 16 aa fe 10 00 02 63 69 72 63 75 69 74 64 69 67 65 73 74 07 00 00 00
+    
+    to stop: sudo hciconfig hci0 down
     
 8. receive BLE frames on the server
       **goal: on receiving a particular UUID, sound an alarm (may be a gentle music)/show something on the screen**
@@ -131,12 +136,16 @@ Features
       sudo apt-get install python3-pip python3-dev ipython3 bluetooth libbluetooth-dev
       sudo pip3 install pybluez
       cd
-      git clone https://github.com/singaCapital/BLE-Beacon-Scanner.git
+      git clone https://github.com/ccloquet/BLE-Beacon-Scanner.git
+ 
+      this code should be adapted (eg: remove all the unneeded parts, sound an alarm on frame detection, etc)
 
-      sudo python3 /home/pi/BLE-Beacon-Scanner/BeaconScanner.py
+      basic usage:
+          sudo python3 /home/pi/BLE-Beacon-Scanner/BeaconScanner.py
 
+9. detect when
 
-9. send BLE frames when the sound meet some criteria
+10. send the BLE frames when the sound meet some criteria
    - volume
    - frequency
 
