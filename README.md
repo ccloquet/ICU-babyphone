@@ -119,8 +119,8 @@ _2. Basic install_
     
 7. send BLE frames from the babymike
     **goal: to send alarms to the server, as a back up if the ffmpeg stream does not work**
-    https://medium.com/@bhargavshah2011/converting-raspberry-pi-3-into-beacon-f01b3169e12f
-    https://pimylifeup.com/raspberry-pi-ibeacon/
+    https://medium.com/@bhargavshah2011/converting-raspberry-pi-3-into-beacon-f01b3169e12f (explains with Eddystone)
+    https://pimylifeup.com/raspberry-pi-ibeacon/ (explains with BLE + how to generate uuid)
 
     sudo hciconfig hci0 up
 
@@ -168,8 +168,9 @@ _2. Basic install_
 
 References
 
-  - FFMPEG streaming: https://trac.ffmpeg.org/wiki/StreamingGuide
+  - FFMPEG streaming: https://trac.ffmpeg.org/wiki/StreamingGuide, https://www.raspberrypi.org/forums/viewtopic.php?t=226843, http://sharonleal.me/, http://iltabiai.github.io/2018/03/17/rpi-stream.html, https://blog.tremplin.ens-lyon.fr/GerardVidal/faire-du-streaming-live-avec-une-raspberry-pi-et-les-ressources-de-lens-ife.html, https://raspberrypi.stackexchange.com/questions/32677/setup-microphone-stream-and-turn-your-raspberry-pi-into-a-baby-phone
   - VLC: https://www.videolan.org/streaming-features.html
   - BLE: https://www.argenox.com/library/bluetooth-low-energy/using-raspberry-pi-ble/
+  - WebRTC Streaming: https://github.com/kclyu/rpi-webrtc-streamer
 
 (note: screen should not be hires otherwise risk of Radio Interference withg Wifi?)
