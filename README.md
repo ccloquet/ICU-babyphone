@@ -30,7 +30,7 @@ Features
 
 2. basic install 
   - install Raspberry Pi Imager on your computer
-  - using it, install the minimal Raspbian distro (~400 Mb) on each micro SD card
+  - using it, install the Raspbian lite distro (~400 Mb) on each micro SD card
   - on each card
     - create a ssh folder at the root
     - connect the ethernet cable
