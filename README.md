@@ -1,7 +1,7 @@
 # ICU babyphone
 Modern babyphone to transmit monitoring alarms in ICU units
 
-Features
+_0. Features_
 
  1. broadcasts the sounds of the alamrs inside the ICU room to any device outside (eg: a smartphone, a computer, ...)
    - this uses 2 raspberry pi (1 as a mike in the room, 1 as a server outside the room), and, eg, 1 smartphone.
@@ -14,7 +14,7 @@ Features
    
  The combination of 1 & 2 is designed for the reliability (should one fail, the other is expected to work)
 
-1. material
+_1. Material_
 
   - let n_d be the number of detectors and n_s be the number of servers and n_tot = n_d + n_s
   - then you need n_tot of the following
@@ -23,59 +23,58 @@ Features
     - 1 Kingston 32 Gb class-10 micro SD card
     - 1 raspberry pi case
   - you also need n_d times
-    - 1 USB microphone
+    - 1 USB microphone (this ones works but is of low quality: https://www.amazon.fr/gp/product/B086PH9ZZX)
   - and finally
     - 1 computer
     - 1 ethernet cable (crossover or not)
+    - otionally 1 smartphone per person that should receive the alarms
+    
+_2. Basic install_
 
-2. basic install 
   - install Raspberry Pi Imager on your computer
-  - using it, install the Raspbian lite distro (~400 Mb) on each micro SD card
-  - on each card
+  - share the internet connection of your computer with its ethernet port (in network configuration > properties of the wifi > sharing > over Ethernet)
+  - on each micro SD card
+    - install the Raspbian lite distro (~400 Mb) 
     - create a ssh folder at the root
+  - on each Pi
     - connect the ethernet cable
     - using you preferred SSH client (eg: Putty), connect to raspberrypi.local (login: pi, password:raspberry)
     - change the default SSH password using the passwd command
     - sudo raspi-config
-      - enter hostname
+      - enter hostname:
         - for the servers, eg, babyserver000 (babyserver000)
         - for the microphones, eg, babymike000 (babymike000, babymike001, ...)
-      - wireless lan (not needed if your compute shares its internet connection through the ethernet cable)
+      - optional: wireless lan (not needed if your compute shares its internet connection through the ethernet cable)
         - the local wifi router should be in 2.4 Ghz
         - enter the SSID & password of your local wifi router
       - reboot
     - connect again through ethernet cable
-      - from now on, they can be accessed through the ethernet cable using {hostname}.local instead of raspberrypi.local
+      - from now on, the Pi can be accessed through the ethernet cable using {hostname}.local instead of raspberrypi.local
       - sudo apt-get update
       - sudo apt-get upgrade
-      - sudo apt-get install vim vlc ffmpeg
+      - sudo apt-get install git vim vlc ffmpeg
 
-3. share the internet connection of your computer through the etehernet cable (in network configuration, properties of the wifi, sharing, over Ethernet)
+3. Configure the _babyserverXXX_ as an accesspoint 
+     - follow: https://www.raspberrypi.org/documentation/configuration/wireless/access-point-routed.md
+     - skip the routing section if you do not want to share the internet through the ethernet connection
+     - in the 192.168.4.* range (potential conflicts with home router ?)
+     - provides adresses trough DHCP between 192.168.4.2 and 192.168.4.20 (-> can presumably accept fixed ips outside this range)
+     - ssid=babynet
 
-4. on the babyserver configure an accesspoint 
- https://www.raspberrypi.org/documentation/configuration/wireless/access-point-routed.md
- (skip the routing section)
-  - in the 192.168.4.* range (potential conflicts with home router ?)
-  - provides adresses trough DHCP between 192.168.4.2 and 192.168.4.20
-  (-> can presumably accept fixed ips outside this range)
+4. Configure the _babymikeXXX_, to connect to the accesspoint
+      - follow: https://raspberrypihq.com/how-to-connect-your-raspberry-pi-to-wifi/
+      - any pi of the network can be accessed from one pi
   
-  ssid=babynet
-  
-  on the babymike, configure the ssid for the network access
-  https://raspberrypihq.com/how-to-connect-your-raspberry-pi-to-wifi/
-  
-5. basic streaming from babymike to babyserver
-   https://blog.mutsuda.com/raspberry-pi-into-an-audio-spying-device-7a56e7a9090e#.fr4l82xek
-   connect the usb microphone to the babymike
-   on the babymike: arecord -D plughw:1,0 -f dat | ssh -C pi@192.168.4.1 aplay -f dat
-   enter the password of the babyserver
-   listen on the babyserver (through HDMI or through headphones)
-   
-   le mini micro usb n'est pas génial...
+5. basic streaming from _babymikeXXX_ to _babyserverXXX_ (just for test, wont be used in prod)
+    - source : https://blog.mutsuda.com/raspberry-pi-into-an-audio-spying-device-7a56e7a9090e#.fr4l82xek
+    - connect the usb microphone to the babymike
+    - on the babymike: arecord -D plughw:1,0 -f dat | ssh -C pi@192.168.4.1 aplay -f dat
+    - enter the password of the babyserver
+    - listen on the babyserver (through HDMI or through headphones)
    
 6. more advanced streaming (with compression & server)
     
-   some tests 
+   a. some tests 
     - listening to the radio (works also in VLC)
       cvlc -A alsa,none --alsa-audio-device default http://icecast.omroep.nl/radio2-bb-mp3.m3u
     
@@ -83,11 +82,11 @@ Features
        ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://localhost:1234
        cvlc -A alsa,none --alsa-audio-device default rtp://localhost:1234
     
-    does this work?
-      on the mike: ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://192.168.4.1:1234
-      on the server: cvlc -A alsa,none --alsa-audio-device default rtp://192.168.4.1:1234
+    - does this work?
+       on the mike: ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://192.168.4.1:1234
+       on the server: cvlc -A alsa,none --alsa-audio-device default rtp://192.168.4.1:1234
   
-    setting up a streaming server using https://github.com/revmischa/rtsp-server
+   b. setting up a streaming server using https://github.com/revmischa/rtsp-server
       
       to install, on the babyserver:
       ~~~
@@ -102,21 +101,21 @@ Features
       sudo make install
       ~~~   
      
-      to run, on the babyserver:
+      **to run, on the babyserver:**
       ~~~   
       sudo -b /home/pi/rtsp-server/rtsp-server.pl
       ~~~   
   
-      to run, on the babymike: 
+      **to run, on the babymike:**
       ~~~
       sudo -b ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtsp rtsp://192.168.4.1:5545/babymike000
       ~~~
 
-    then, on any device connected on the network
-    use, eg, VLC/VLC for Android/... to read the stream 
-    eg: cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000
+      then, on any device connected on the network
+      use, eg, VLC/VLC for Android/... to read the stream 
+      eg: cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000
     
-    **from now on, you can listen on any device (rpi, smartphone, ...) the sounds heard by the babymikes**
+      **from now on, you can listen on any device (rpi, smartphone, ...) the sounds heard by the babymikes**
     
 7. send BLE frames from the babymike
     **goal: to send alarms to the server, as a back up if the ffmpeg stream does not work**
@@ -124,7 +123,9 @@ Features
     https://pimylifeup.com/raspberry-pi-ibeacon/
 
     sudo hciconfig hci0 up
+
     sudo hciconfig hci0 leadv 3
+
     sudo hcitool -i hci0 cmd 0x08 0x0008 1c 02 01 06 03 03 aa fe 14 16 aa fe 10 00 02 63 69 72 63 75 69 74 64 69 67 65 73 74 07 00 00 00
     
     to stop: sudo hciconfig hci0 down
@@ -143,18 +144,31 @@ Features
       basic usage:
           sudo python3 /home/pi/BLE-Beacon-Scanner/BeaconScanner.py
 
-9. detect when
-
-10. send the BLE frames when the sound meet some criteria
+9. detect when the when the sound meet some criteria
    - volume
    - frequency
 
-10. play/display the alarms
+10. send the BLE frames whe the sound meet these criteria 
+
+11. play/display the alarms
   - on the server
   - on a smartphone
+    - VLC for Android
+    - Tasker for the BLE frames: https://forum.frandroid.com/topic/69334-tasker-aideinfoscreation-de-profils/page/9/
 
+  - play a gentle sound
+   https://raspberrypi.stackexchange.com/questions/94098/reliable-way-to-play-sound-ogg-mp3-in-python-on-pi-zero-w
+   https://raspberrypi.stackexchange.com/questions/7088/playing-audio-files-with-python
 
+  - show the status as large color blocks
+
+12. Autoload on boot
+
+13. Keepalive
 
 References
-FFMPEG streaming : https://trac.ffmpeg.org/wiki/StreamingGuide
-VLC : https://www.videolan.org/streaming-features.html
+FFMPEG streaming: https://trac.ffmpeg.org/wiki/StreamingGuide
+VLC: https://www.videolan.org/streaming-features.html
+BLE: https://www.argenox.com/library/bluetooth-low-energy/using-raspberry-pi-ble/
+
+(note: screen should not be hires otherwise risk of Radio Interference withg Wifi?)
