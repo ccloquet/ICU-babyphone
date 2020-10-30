@@ -4,30 +4,30 @@ Modern babyphone to transmit monitoring alarms in ICU units
 _0. Features_
 
  1. broadcasts the sounds of the alamrs inside the ICU room to any device outside (eg: a smartphone, a computer, ...)
-   - this uses 2 raspberry pi (1 as a mike in the room, 1 as a server outside the room), and, eg, 1 smartphone.
-   - technology: RTSP
-   - software: FFMPEG, VLC, RTSP-SERVER
+    - this uses 2 raspberry pi (1 as a mike in the room, 1 as a server outside the room), and, eg, 1 smartphone.
+    - technology: RTSP
+    - software: FFMPEG, VLC, RTSP-SERVER
  
  2. notifies the user that an alarm is sounding from inside the room
-   - using the same raspberry pis
-   - technology: Bluetooth Low Energy beacon frames
+    - using the same raspberry pis
+    - technology: Bluetooth Low Energy beacon frames
    
  The combination of 1 & 2 is designed for the reliability (should one fail, the other is expected to work)
 
 _1. Material_
 
-  - let n_d be the number of detectors and n_s be the number of servers and n_tot = n_d + n_s
-  - then you need n_tot of the following
+  - let n_d be the number of detectors, n_s be the number of servers and n_tot = n_d + n_s
+  - then you need n_tot of the following:
     - 1 raspberry pi 4
-    - 1 officiel raspberry pi alim
+    - 1 official raspberry pi alim (3A)
     - 1 Kingston 32 Gb class-10 micro SD card
     - 1 raspberry pi case
-  - you also need n_d times
+  - you also need n_d of the following:
     - 1 USB microphone (this ones works but is of low quality: https://www.amazon.fr/gp/product/B086PH9ZZX)
   - and finally
-    - 1 computer
+    - 1 computer with ethernet port
     - 1 ethernet cable (crossover or not)
-    - otionally 1 smartphone per person that should receive the alarms
+    - optionally 1 smartphone per person that should receive the alarms
     
 _2. Basic install_
 
@@ -50,9 +50,10 @@ _2. Basic install_
       - reboot
     - connect again through ethernet cable
       - from now on, the Pi can be accessed through the ethernet cable using {hostname}.local instead of raspberrypi.local
-      - sudo apt-get update
-      - sudo apt-get upgrade
-      - sudo apt-get install git vim vlc ffmpeg
+      - ~~~
+        sudo apt-get update
+        sudo apt-get upgrade
+        sudo apt-get install git vim vlc ffmpeg
 
 3. Configure the _babyserverXXX_ as an accesspoint 
      - follow: https://www.raspberrypi.org/documentation/configuration/wireless/access-point-routed.md
@@ -63,13 +64,13 @@ _2. Basic install_
 
 4. Configure the _babymikeXXX_, to connect to the accesspoint
       - follow: https://raspberrypihq.com/how-to-connect-your-raspberry-pi-to-wifi/
-      - any pi of the network can be accessed from one pi
+      - any pi of the network can be accessed from any other pi
   
 5. basic streaming from _babymikeXXX_ to _babyserverXXX_ (just for test, wont be used in prod)
     - source : https://blog.mutsuda.com/raspberry-pi-into-an-audio-spying-device-7a56e7a9090e#.fr4l82xek
     - connect the usb microphone to the babymike
-    - on the babymike: arecord -D plughw:1,0 -f dat | ssh -C pi@192.168.4.1 aplay -f dat
-    - enter the password of the babyserver
+    - on the babymikeXXX:  arecord -D plughw:1,0 -f dat | ssh -C pi@192.168.4.1 aplay -f dat
+    - enter the password of the babyserverXXX
     - listen on the babyserver (through HDMI or through headphones)
    
 6. more advanced streaming (with compression & server)
@@ -87,8 +88,10 @@ _2. Basic install_
        on the server: cvlc -A alsa,none --alsa-audio-device default rtp://192.168.4.1:1234
   
    b. setting up a streaming server using https://github.com/revmischa/rtsp-server
+   
       
-      to install, on the babyserver:
+     to install, on the babyserver:
+     
       ~~~
       sudo apt-get install git libmoose-perl liburi-perl libmoosex-getopt-perl libsocket6-perl libanyevent-perl
       sudo cpan AnyEvent::MPRPC::Client
@@ -111,22 +114,22 @@ _2. Basic install_
       sudo -b ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtsp rtsp://192.168.4.1:5545/babymike000
       ~~~
 
-      then, on any device connected on the network
-      use, eg, VLC/VLC for Android/... to read the stream 
-      eg: cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000
+      then, read on on any device connected on the network, eg:
+        - on a smartphone, using VLC/VLC for Android/... 
+        - on a pi, using the command: cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000
     
       **from now on, you can listen on any device (rpi, smartphone, ...) the sounds heard by the babymikes**
     
 7. send BLE frames from the babymike
-    **goal: to send alarms to the server, as a back up if the ffmpeg stream does not work**
+    **goal: to send alarms to the server, as a backup if the ffmpeg stream does not work**
     https://medium.com/@bhargavshah2011/converting-raspberry-pi-3-into-beacon-f01b3169e12f (explains with Eddystone)
     https://pimylifeup.com/raspberry-pi-ibeacon/ (explains with BLE + how to generate uuid)
 
+    ~~~
     sudo hciconfig hci0 up
-
     sudo hciconfig hci0 leadv 3
-
     sudo hcitool -i hci0 cmd 0x08 0x0008 1c 02 01 06 03 03 aa fe 14 16 aa fe 10 00 02 63 69 72 63 75 69 74 64 69 67 65 73 74 07 00 00 00
+    ~~~
     
     to stop: sudo hciconfig hci0 down
     
@@ -166,11 +169,12 @@ _2. Basic install_
 
 13. Keepalive
 
-References
+_Other references_
 
   - FFMPEG streaming: https://trac.ffmpeg.org/wiki/StreamingGuide, https://www.raspberrypi.org/forums/viewtopic.php?t=226843, http://sharonleal.me/, http://iltabiai.github.io/2018/03/17/rpi-stream.html, https://blog.tremplin.ens-lyon.fr/GerardVidal/faire-du-streaming-live-avec-une-raspberry-pi-et-les-ressources-de-lens-ife.html, https://raspberrypi.stackexchange.com/questions/32677/setup-microphone-stream-and-turn-your-raspberry-pi-into-a-baby-phone
   - VLC: https://www.videolan.org/streaming-features.html
   - BLE: https://www.argenox.com/library/bluetooth-low-energy/using-raspberry-pi-ble/
   - WebRTC Streaming: https://github.com/kclyu/rpi-webrtc-streamer
 
-(note: screen should not be hires otherwise risk of Radio Interference withg Wifi?)
+(note:it seems that the screen connected to the pi should not be hi-res otherwise risk of Radio Interference with Wifi?)
+
