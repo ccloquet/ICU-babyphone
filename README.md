@@ -91,7 +91,7 @@ modern babyphone to transmit monitoring alarms in ICU units
      
       to run, on the babyserver:
       ~~~   
-      sudo -b /home/pi/mkvserver/mkvserver_mk2-master/rtsp-server/rtsp-server.pl
+      sudo -b /home/pi/rtsp-server/rtsp-server.pl
       ~~~   
   
       to run, on the babymike: 
