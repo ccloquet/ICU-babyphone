@@ -1,5 +1,18 @@
-# icu_babyphone
-modern babyphone to transmit monitoring alarms in ICU units
+# ICU babyphone
+Modern babyphone to transmit monitoring alarms in ICU units
+
+Features
+
+ 1. broadcasts the sounds of the alamrs inside the ICU room to any device outside (eg: a smartphone, a computer, ...)
+   - this uses 2 raspberry pi (1 as a mike in the room, 1 as a server outside the room), and, eg, 1 smartphone.
+   - technology: RTSP
+   - software: FFMPEG, VLC, RTSP-SERVER
+ 
+ 2. notifies the user that an alarm is sounding from inside the room
+   - using the same raspberry pis
+   - technology: Bluetooth Low Energy beacon frames
+   
+ The combination of 1 & 2 is designed for the reliability (should one fail, the other is expected to work)
 
 1. material
 
