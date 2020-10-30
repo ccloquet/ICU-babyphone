@@ -130,3 +130,9 @@ Features
 10. play/display the alarms
   - on the server
   - on a smartphone
+
+
+
+References
+FFMPEG streaming : https://trac.ffmpeg.org/wiki/StreamingGuide
+VLC : https://www.videolan.org/streaming-features.html
