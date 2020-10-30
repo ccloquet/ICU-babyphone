@@ -1,6 +1,6 @@
 # ICU babyphone
 
-A modern babyphone to transmit ICU units monitoring alarms -- through Wifi/ethernet network -- to a smartphone
+A modern babyphone to transmit ICU units monitoring alarms -- through Wifi/ethernet network -- to a smartphone or any other computer
 
 Problem: during the covid-19 crisis, intensive care units (ICU) have been equipped with material that sound alarms, but that is not linked to a central desk. Or there is a central desk, but no nurse available to check it. Sometimes, babyphone are used, but they can not be carried by several people at a time, or they are too farto be hearf-d.
 
