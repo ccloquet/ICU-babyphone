@@ -1,5 +1,6 @@
 # ICU babyphone
-Modern babyphone to transmit monitoring alarms in ICU units
+
+A modern babyphone to transmit ICU units monitoring alarms -- through Wifi/ethernet network -- to a smartphone
 
 _0. Features_
 
@@ -13,6 +14,8 @@ _0. Features_
     - technology: Bluetooth Low Energy beacon frames
    
  The combination of 1 & 2 is designed for the reliability (should one fail, the other is expected to work)
+ 
+ Note: in this tutorial, a network is created netween the Pi's. Any sufficienty robust/secured network could be used.
 
 _1. Material_
 
