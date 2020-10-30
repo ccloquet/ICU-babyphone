@@ -141,7 +141,7 @@ _2. Basic install_
     
     to stop: sudo hciconfig hci0 down
     
-8. receive BLE frames on the server
+8. receive BLE frames on the babyserver
       **goal: on receiving a particular UUID, sound an alarm (may be a gentle music)/show something on the screen**
       uses https://github.com/singaCapital/BLE-Beacon-Scanner
       ~~~
