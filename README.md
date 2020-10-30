@@ -51,8 +51,35 @@ modern babyphone to transmit monitoring alarms in ICU units
   on the babymike, configure the ssid for the network access
   https://raspberrypihq.com/how-to-connect-your-raspberry-pi-to-wifi/
   
+5. basic streaming from babymike to babyserver
+   https://blog.mutsuda.com/raspberry-pi-into-an-audio-spying-device-7a56e7a9090e#.fr4l82xek
+   connect the usb microphone to the babymike
+   on the babymike: arecord -D plughw:1,0 -f dat | ssh -C pi@192.168.4.1 aplay -f dat
+   enter the password of the babyserver
+   listen on the babyserver (through HDMI or through headphones)
+   
+   le mini micro usb n'est pas génial...
+   
+ 6. more advanced streaming (with compression)
+   on the mike: ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://192.168.4.1:1234
+   on the server: cvlc -A alsa,none --alsa-audio-device default rtp://192.168.4.1:1234
+   
+
+   
+   note: this works also
+    - listening to the radio:
+      - cvlc -A alsa,none --alsa-audio-device default http://icecast.omroep.nl/radio2-bb-mp3.m3u
+    
+    - streaming on the babymike itself
+       ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://localhost:1234
+       cvlc -A alsa,none --alsa-audio-device default rtp://localhost:1234
   
-  
+  mkdir mkvserver/
+  cd mkvserver/
+  wget https://github.com/klaxa/mkvserver_mk2/archive/master.zip
+  unzip master.zip
+  cd mkvserver_mk2-master/
+  make
 ~~~
   
 ~~~
