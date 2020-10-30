@@ -167,8 +167,9 @@ _2. Basic install_
 13. Keepalive
 
 References
-FFMPEG streaming: https://trac.ffmpeg.org/wiki/StreamingGuide
-VLC: https://www.videolan.org/streaming-features.html
-BLE: https://www.argenox.com/library/bluetooth-low-energy/using-raspberry-pi-ble/
+
+  - FFMPEG streaming: https://trac.ffmpeg.org/wiki/StreamingGuide
+  - VLC: https://www.videolan.org/streaming-features.html
+  - BLE: https://www.argenox.com/library/bluetooth-low-energy/using-raspberry-pi-ble/
 
 (note: screen should not be hires otherwise risk of Radio Interference withg Wifi?)
