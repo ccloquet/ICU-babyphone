@@ -33,9 +33,9 @@ modern babyphone to transmit monitoring alarms in ICU units
       - reboot
     - connect again through ethernet cable
       - from now on, they can be accessed through the ethernet cable using {hostname}.local instead of raspberrypi.local
-      - ~~~sudo apt-get update~~~
-      - ~~~sudo apt-get upgrade~~~
-      - ~~~sudo apt-get install vim vlc ffmpeg~~~
+      - sudo apt-get update
+      - sudo apt-get upgrade
+      - sudo apt-get install vim vlc ffmpeg
 
 3. share the internet connection of your computer through the etehernet cable (in network configuration, properties of the wifi, sharing, over Ethernet)
 
@@ -64,18 +64,17 @@ modern babyphone to transmit monitoring alarms in ICU units
     
    some tests 
     - listening to the radio (works also in VLC)
-      ```cvlc -A alsa,none --alsa-audio-device default http://icecast.omroep.nl/radio2-bb-mp3.m3u´´´
+      cvlc -A alsa,none --alsa-audio-device default http://icecast.omroep.nl/radio2-bb-mp3.m3u
     
     - streaming on the babymike itself
-       ~~~ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://localhost:1234
-       cvlc -A alsa,none --alsa-audio-device default rtp://localhost:1234~~~
+       ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://localhost:1234
+       cvlc -A alsa,none --alsa-audio-device default rtp://localhost:1234
     
     does this work?
-      on the mike: ~~~ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://192.168.4.1:1234~~~
-      on the server: ~~~cvlc -A alsa,none --alsa-audio-device default rtp://192.168.4.1:1234~~~
+      on the mike: ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://192.168.4.1:1234
+      on the server: cvlc -A alsa,none --alsa-audio-device default rtp://192.168.4.1:1234
   
-    setting up a streaming server
-      using https://github.com/revmischa/rtsp-server
+    setting up a streaming server using https://github.com/revmischa/rtsp-server
       
       to install, on the babyserver:
 ~~~
@@ -103,7 +102,7 @@ modern babyphone to transmit monitoring alarms in ICU units
 
     then, on any device connected on the network
     use, eg, VLC/VLC for Android/... to read the stream 
-    eg: ~~~cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000~~~
+    eg: cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000
     
-    from 
+    **from now on, you can listen on any device (rpi, smartphone, ...) the sounds heard by the babymikes**
     
