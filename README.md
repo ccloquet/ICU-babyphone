@@ -64,7 +64,7 @@ modern babyphone to transmit monitoring alarms in ICU units
     
    some tests 
     - listening to the radio (works also in VLC)
-      ~~~cvlc -A alsa,none --alsa-audio-device default http://icecast.omroep.nl/radio2-bb-mp3.m3u~~~
+      ```cvlc -A alsa,none --alsa-audio-device default http://icecast.omroep.nl/radio2-bb-mp3.m3u´´´
     
     - streaming on the babymike itself
        ~~~ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://localhost:1234
