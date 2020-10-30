@@ -152,7 +152,14 @@ _2. Basic install_
 
 9. detect when the when the sound meet some criteria
    - volume
+     - https://moduliertersingvogel.de/2018/11/07/measure-loudness-with-a-usb-micro-on-a-raspberry-pi/
    - frequency
+     - it seems that SoundAnalyze above can detect the pitch (https://github.com/ExCiteS/SLMPi/tree/master/SoundAnalyse-0.1.1)
+     - but what if many frequencies? if they come rapidly on after another? -> to test
+     - otherwize: filtering:
+        - https://pypi.org/project/audiolazy/
+        - https://stackoverflow.com/questions/35764018/python-microphone-input-and-low-pass-filter-effect-realtime>
+
 
 10. send the BLE frames whe the sound meet these criteria 
 
@@ -178,6 +185,8 @@ _Other references_
   - VLC: https://www.videolan.org/streaming-features.html
   - BLE: https://www.argenox.com/library/bluetooth-low-energy/using-raspberry-pi-ble/
   - WebRTC Streaming: https://github.com/kclyu/rpi-webrtc-streamer
-
+  - usb audio: https://www.seeedstudio.com/blog/2019/08/08/how-to-use-usb-mini-microphone-on-raspberry-pi-4/, https://iotbytes.wordpress.com/connect-configure-and-test-usb-microphone-and-speaker-with-raspberry-pi/, https://raspberrytips.com/add-microphone-raspberry-pi/
+  
+  
 (note:it seems that the screen connected to the pi should not be hi-res otherwise risk of Radio Interference with Wifi?)
 
