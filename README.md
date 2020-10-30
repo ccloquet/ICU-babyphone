@@ -40,7 +40,7 @@ Features
       - enter hostname
         - for the servers, eg, babyserver000 (babyserver000)
         - for the microphones, eg, babymike000 (babymike000, babymike001, ...)
-      - wireless lan
+      - wireless lan (not needed if your compute shares its internet connection through the ethernet cable)
         - the local wifi router should be in 2.4 Ghz
         - enter the SSID & password of your local wifi router
       - reboot
