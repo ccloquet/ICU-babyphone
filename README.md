@@ -32,18 +32,18 @@ _0. Features_
 
 _1. Material_
 
-  - let n_d be the number of detectors, n_s be the number of servers and n_tot = n_d + n_s
-  - then you need n_tot of the following:
+  - let n<sub>d</sub> be the number of detectors, n<sub>s</sub> be the number of servers and n<sub>tot</sub> = n<sub>d</sub> + n<sub>s</sub>
+  - then you need n<sub>tot</sub> of the following:
     - 1 raspberry pi 4
     - 1 official raspberry pi alim (3A)
     - 1 Kingston 32 Gb class-10 micro SD card
     - 1 raspberry pi case
-  - you also need n_d of the following:
-    - 1 USB microphone (this ones works but is of low quality: https://www.amazon.fr/gp/product/B086PH9ZZX)
+  - you also need n<sub>d</sub> of the following:
+    - 1 USB microphone (this ones works but is of low quality: https://www.amazon.fr/gp/product/B086PH9ZZX -- try to buy from your local shop)
   - and finally
-    - 1 computer with ethernet port
-    - 1 ethernet cable (crossover or not)
-    - optionally 1 smartphone per person that should receive the alarms
+    - 1 computer with Ethernet port
+    - 1 Ethernet cable (crossover or not)
+    - optionally 1 dedicated smartphone per person that should receive the alarms
     
 _2. Basic install_
 
@@ -51,9 +51,9 @@ _2. Basic install_
   - share the internet connection of your computer with its ethernet port (in network configuration > properties of the wifi > sharing > over Ethernet)
   - on each micro SD card
     - install the Raspbian lite distro (~400 Mb) 
-    - create a ssh folder at the root
+    - create a folder named "ssh" (without quotes) at the root
   - on each Pi
-    - connect the ethernet cable
+    - connect the Ethernet cable
     - using you preferred SSH client (eg: Putty), connect to raspberrypi.local (login: pi, password:raspberry)
     - change the default SSH password using the passwd command
     - sudo raspi-config
