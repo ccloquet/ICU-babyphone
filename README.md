@@ -57,17 +57,17 @@ _2. Basic install_
   - on each Pi
     - connect the Ethernet cable
     - using you preferred SSH client (eg: Putty), connect to raspberrypi.local (login: pi, password:raspberry)
-    - change the default SSH password using the passwd command
-    - sudo raspi-config
+    - change the default SSH password using the ```passwd``` command
+    - ```sudo raspi-config```
       - enter hostname:
         - for the servers, eg, babyserver000 (babyserverXXX)
         - for the microphones, eg, babymike000, babymike001, ... (_babymikeYYY_)
-      - optional: wireless lan (not needed if your compute shares its internet connection through the ethernet cable)
+      - optional: wireless lan (not needed if your computer shares its internet connection through the ethernet cable)
         - the local wifi router should be in 2.4 Ghz
         - enter the SSID & password of your local wifi router
       - reboot
-    - connect again through ethernet cable
-      - from now on, the Pi can be accessed through the ethernet cable using {hostname}.local instead of raspberrypi.local
+    - connect again to the Pi through the Ethernet cable
+      - from now on, the Pi can be accessed through the Ethernet cable using {hostname}.local instead of raspberrypi.local
       - ```
         sudo apt-get update
         sudo apt-get upgrade
@@ -119,7 +119,7 @@ _2. Basic install_
      to install, on the _babyserver_:
      
       ```
-      sudo apt-get install git libmoose-perl liburi-perl libmoosex-getopt-perl libsocket6-perl libanyevent-perl
+      sudo apt-get install libmoose-perl liburi-perl libmoosex-getopt-perl libsocket6-perl libanyevent-perl
       sudo cpan AnyEvent::MPRPC::Client
       cd
       git clone https://github.com/revmischa/rtsp-server
