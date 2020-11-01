@@ -4,7 +4,7 @@ _A modern babyphone solution to transmit ICU units monitoring alarms -- through 
 
 **Motivation**: during the Covid-19 crisis, temporary intensive care units (ICU) with isolated rooms have been created and equipped with biomedical equipment (monitoring, ECMOs, ...). These devices sound alarms, but the sound cannot be heard outside the room. Because of the temporary nature of the rooms, the devices are not linked to a central desk like in established ICU. When there is a central desk, no nurse is available to check it. 
 
-Sometimes, babyphones are used to transmit the alarms from the room, but they cannot be carried by several people at a time, they are too far to be heard and their alarms are not specific: it is often difficult to distinguish which device is triggering the alarm, which causes losses of time.
+Sometimes, babyphones are used to transmit the alarms from the room, but they cannot be carried by several people at a time, they are too far to be heard and their alarms are not specific: it is often difficult to distinguish which device is triggering the alarm, which causes either losses of time and energy for the staff (false positives), or degraded care to the patients (false negatives).
 
 There is therefore a need for a versatile and robust solution that can relay the alarms of any biomedical device and specify which device is sounding. The following solution is based on a set of Raspberry Pi devices.
 
