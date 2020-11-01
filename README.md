@@ -146,7 +146,7 @@ _2. Basic install_
     
       **from now on, you can listen on any device (rpi, smartphone, ...) the sounds heard by the babymikes**
     
-7. send BLE frames from the babymike
+7. **send BLE frames from the babymike**
     **goal: to send alarms to the server, as a backup if the ffmpeg stream does not work**
     https://medium.com/@bhargavshah2011/converting-raspberry-pi-3-into-beacon-f01b3169e12f (explains with Eddystone)
     https://pimylifeup.com/raspberry-pi-ibeacon/ (explains with BLE + how to generate uuid)
@@ -159,7 +159,7 @@ _2. Basic install_
     
     to stop: sudo hciconfig hci0 down
     
-8. receive BLE frames on the babyserver
+8. **receive BLE frames on the babyserver**
       **goal: on receiving a particular UUID, sound an alarm (may be a gentle music)/show something on the screen**
       uses https://github.com/singaCapital/BLE-Beacon-Scanner
       
@@ -176,7 +176,7 @@ _2. Basic install_
       basic usage:
       ```sudo python3 /home/pi/BLE-Beacon-Scanner/BeaconScanner.py```
 
-9. detect when the when the sound meet some criteria (volume, frequency)
+9. **detect when the when the sound meet some criteria (volume, frequency)**
    - sources: https://moduliertersingvogel.de/2018/11/07/measure-loudness-with-a-usb-micro-on-a-raspberry-pi, https://python-sounddevice.readthedocs.io/en/0.4.1/examples.html#real-time-text-mode-spectrogram
    
    - ```
@@ -193,7 +193,10 @@ _2. Basic install_
      pip3 install numpy
      pip3 install sounddevice```
    
-   - the following code displays a real time spectrogram https://python-sounddevice.readthedocs.io/en/0.4.1/examples.html#real-time-text-mode-spectrogram
+   - spectrogram.py (in this repo) displays a real time spectrogram: 
+   ```cd
+   wget https://raw.githubusercontent.com/ccloquet/ICU-babyphone/main/spectrogram.py?token=ABOSWY6MT3VZS3DM4226GN27VA5TE
+   ```
    - eg: ```python3 spectrogram.py -c 160 -r 10 5000 -g 50```
    - ```python3 spectrogram.py -c 10 -r 10 5000 -g 100``` has a smaller number of bins => maybe easier to interpret
    - these data can be used to extract signatures of the alarms
@@ -204,7 +207,7 @@ _2. Basic install_
      - as the access to the room may be difficult, the calibration should be done from outside
      - => access to the pi trough SSH from the outside
 
-10. send the BLE frames whe the sound meet these criteria 
+10. **send the BLE frames when the sound meet these criteria**, and stop them when they stop meeting these criteria, for, eg, 10 seconds in  ro
 
 11. play/display the alarms
   - on the server
