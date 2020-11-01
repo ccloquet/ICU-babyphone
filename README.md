@@ -1,4 +1,4 @@
-# ICU babyphone
+# ICU babyphone network
 
 A modern babyphone to transmit ICU units monitoring alarms -- through Wifi/ethernet network -- to a smartphone or any other computer.
 
