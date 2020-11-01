@@ -243,7 +243,9 @@ _2. Basic install_
 14. autoload on boot
 
 14. keepalive
-
+  - send a BLE frame every 10 seconds
+  - if two in a row are missing => sound an alarm
+  
 _Other references_
 
   - FFMPEG streaming: https://trac.ffmpeg.org/wiki/StreamingGuide, https://www.raspberrypi.org/forums/viewtopic.php?t=226843, http://sharonleal.me/, http://iltabiai.github.io/2018/03/17/rpi-stream.html, https://blog.tremplin.ens-lyon.fr/GerardVidal/faire-du-streaming-live-avec-une-raspberry-pi-et-les-ressources-de-lens-ife.html, https://raspberrypi.stackexchange.com/questions/32677/setup-microphone-stream-and-turn-your-raspberry-pi-into-a-baby-phone
