@@ -71,6 +71,11 @@ _2. Basic install_
         sudo apt-get upgrade
         sudo apt-get install git vim vlc ffmpeg
         ```
+    - on each babymike, 
+      - connect a USB-microphone
+      - test it: ```sudo arecord --device=hw:1,0 --format S16_LE --rate 44100 -V mono -c1 voice.wav```
+      - you my need a reboot after plugging in
+      - troubleshooting: https://github.com/synesthesiam/voice2json/issues/28
 
 3. Configure the _babyserverXXX_ as an accesspoint 
      - follow: https://www.raspberrypi.org/documentation/configuration/wireless/access-point-routed.md
@@ -169,15 +174,30 @@ _2. Basic install_
       basic usage:
       ```sudo python3 /home/pi/BLE-Beacon-Scanner/BeaconScanner.py```
 
-9. detect when the when the sound meet some criteria
-   - volume
-     - https://moduliertersingvogel.de/2018/11/07/measure-loudness-with-a-usb-micro-on-a-raspberry-pi/
-   - frequency
-     - it seems that SoundAnalyze above can detect the pitch (https://github.com/ExCiteS/SLMPi/tree/master/SoundAnalyse-0.1.1)
-     - but what if many frequencies? if they come rapidly on after another? -> to test
-     - otherwise: filtering:
-        - https://pypi.org/project/audiolazy/
-        - https://stackoverflow.com/questions/35764018/python-microphone-input-and-low-pass-filter-effect-realtime
+9. detect when the when the sound meet some criteria (volume, frequency)
+   - sources: https://moduliertersingvogel.de/2018/11/07/measure-loudness-with-a-usb-micro-on-a-raspberry-pi, https://python-sounddevice.readthedocs.io/en/0.4.1/examples.html#real-time-text-mode-spectrogram
+   
+   - ```
+     sudo apt-get install libasound-dev libatlas-base-dev
+     cd
+     wget http://www.portaudio.com/archives/pa_stable_v190600_20161030.tgz
+     tar -xvf pa_stable_v190600_20161030.tgz
+     rm pa_stable_v190600_20161030.tgz
+     cd portaudio
+     ./configure && make
+     sudo make install
+     cd
+     sudo ldconfig
+     pip3 install numpy
+     pip3 install sounddevice 
+   ```
+   
+   - the folloing code displays a real time spectrogram https://python-sounddevice.readthedocs.io/en/0.4.1/examples.html#real-time-text-mode-spectrogram
+   - eg: ```python3 spectrogram.py -c 160 -r 10 5000 -g 50```
+   - ```python3 spectrogram.py -c 10 -r 10 5000 -g 100``` has a smaller number of bins => maybe easier to interpret
+   - these data can be used to extract signatures of the alarms
+   - TODO: manually build a database (frequencies, volumes -- taking account noise & potential other alarms) 
+   - it seems that the microphone should be very close to the monitoring -> have a USB cable
 
 
 10. send the BLE frames whe the sound meet these criteria 
