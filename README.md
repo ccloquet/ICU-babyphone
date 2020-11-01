@@ -80,12 +80,12 @@ _2. Basic install_
 
 4. Configure the _babymikeXXX_, to connect to the accesspoint
       - follow: https://raspberrypihq.com/how-to-connect-your-raspberry-pi-to-wifi/
-      - any pi of the network can be accessed from any other pi
+      - any Pi of the network can be accessed from any other Pi
   
 5. basic streaming from _babymikeXXX_ to _babyserverXXX_ (just for test, wont be used in prod)
     - source : https://blog.mutsuda.com/raspberry-pi-into-an-audio-spying-device-7a56e7a9090e#.fr4l82xek
     - connect the usb microphone to the babymike
-    - on the babymikeXXX:  arecord -D plughw:1,0 -f dat | ssh -C pi@192.168.4.1 aplay -f dat
+    - on the babymikeXXX:  ```arecord -D plughw:1,0 -f dat | ssh -C pi@192.168.4.1 aplay -f dat```
     - enter the password of the babyserverXXX
     - listen on the babyserver (through HDMI or through headphones)
    
@@ -93,22 +93,22 @@ _2. Basic install_
     
    a. some tests 
     - listening to the radio (works also in VLC)
-      cvlc -A alsa,none --alsa-audio-device default http://icecast.omroep.nl/radio2-bb-mp3.m3u
+      ```cvlc -A alsa,none --alsa-audio-device default http://icecast.omroep.nl/radio2-bb-mp3.m3u```
     
     - streaming on the babymike itself
-       ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://localhost:1234
-       cvlc -A alsa,none --alsa-audio-device default rtp://localhost:1234
+       ```ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://localhost:1234
+       cvlc -A alsa,none --alsa-audio-device default rtp://localhost:1234```
     
     - does this work?
-       on the mike: ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://192.168.4.1:1234
-       on the server: cvlc -A alsa,none --alsa-audio-device default rtp://192.168.4.1:1234
+       on the mike: ```ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://192.168.4.1:1234```
+       on the server: ```cvlc -A alsa,none --alsa-audio-device default rtp://192.168.4.1:1234```
   
    b. setting up a streaming server using https://github.com/revmischa/rtsp-server
    
       
      to install, on the babyserver:
      
-      ~~~
+      ```
       sudo apt-get install git libmoose-perl liburi-perl libmoosex-getopt-perl libsocket6-perl libanyevent-perl
       sudo cpan AnyEvent::MPRPC::Client
       cd
@@ -118,21 +118,21 @@ _2. Basic install_
       sudo make
       sudo make test
       sudo make install
-      ~~~   
+      ```  
      
       **to run, on the babyserver:**
-      ~~~   
+      ```  
       sudo -b /home/pi/rtsp-server/rtsp-server.pl
-      ~~~   
+      ```   
   
       **to run, on the babymike:**
-      ~~~
+      ```
       sudo -b ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtsp rtsp://192.168.4.1:5545/babymike000
-      ~~~
+      ```
 
       then, read on on any device connected on the network, eg:
         - on a smartphone, using VLC/VLC for Android/... 
-        - on a pi, using the command: cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000
+        - on a pi, using the command: ```cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000```
     
       **from now on, you can listen on any device (rpi, smartphone, ...) the sounds heard by the babymikes**
     
@@ -141,27 +141,30 @@ _2. Basic install_
     https://medium.com/@bhargavshah2011/converting-raspberry-pi-3-into-beacon-f01b3169e12f (explains with Eddystone)
     https://pimylifeup.com/raspberry-pi-ibeacon/ (explains with BLE + how to generate uuid)
 
-    ~~~
+    ```
     sudo hciconfig hci0 up
     sudo hciconfig hci0 leadv 3
     sudo hcitool -i hci0 cmd 0x08 0x0008 1c 02 01 06 03 03 aa fe 14 16 aa fe 10 00 02 63 69 72 63 75 69 74 64 69 67 65 73 74 07 00 00 00
-    ~~~
+    ```
     
     to stop: sudo hciconfig hci0 down
     
 8. receive BLE frames on the babyserver
       **goal: on receiving a particular UUID, sound an alarm (may be a gentle music)/show something on the screen**
       uses https://github.com/singaCapital/BLE-Beacon-Scanner
-      ~~~
+      
+      install:
+      ```
       sudo apt-get install python3-pip python3-dev ipython3 bluetooth libbluetooth-dev
       sudo pip3 install pybluez
       cd
       git clone https://github.com/ccloquet/BLE-Beacon-Scanner.git
- 
+      ```
+      
       this code should be adapted (eg: remove all the unneeded parts, sound an alarm on frame detection, etc)
 
       basic usage:
-          sudo python3 /home/pi/BLE-Beacon-Scanner/BeaconScanner.py
+      ```sudo python3 /home/pi/BLE-Beacon-Scanner/BeaconScanner.py```
 
 9. detect when the when the sound meet some criteria
    - volume
