@@ -146,10 +146,10 @@ _2. Basic install_
     
       **from now on, you can listen on any device (rpi, smartphone, ...) the sounds heard by the babymikes**
     
-7. **send BLE frames from the babymike**
-    **goal: to send alarms to the server, as a backup if the ffmpeg stream does not work**
-    https://medium.com/@bhargavshah2011/converting-raspberry-pi-3-into-beacon-f01b3169e12f (explains with Eddystone)
-    https://pimylifeup.com/raspberry-pi-ibeacon/ (explains with BLE + how to generate uuid)
+7. **from the babymike: send BLE frames**
+
+    - **goal: to send alarms to the server, as a backup if the ffmpeg stream does not work**
+    - source: https://medium.com/@bhargavshah2011/converting-raspberry-pi-3-into-beacon-f01b3169e12f (explains with Eddystone), https://pimylifeup.com/raspberry-pi-ibeacon/ (explains with BLE + how to generate uuid)
 
     ```
     sudo hciconfig hci0 up
@@ -159,9 +159,9 @@ _2. Basic install_
     
     to stop: sudo hciconfig hci0 down
     
-8. **receive BLE frames on the babyserver**
-      **goal: on receiving a particular UUID, sound an alarm (may be a gentle music)/show something on the screen**
-      uses https://github.com/singaCapital/BLE-Beacon-Scanner
+8. **on the babyserver: receive BLE frames**
+      - **goal: on receiving a particular UUID, sound an alarm (may be a gentle music)/show something on the screen**
+      - uses https://github.com/singaCapital/BLE-Beacon-Scanner
       
       install:
       ```
@@ -173,10 +173,10 @@ _2. Basic install_
       
       this code should be adapted (eg: remove all the unneeded parts, sound an alarm on frame detection, etc)
 
-      basic usage:
+      basic usage, on the _babyserver_
       ```sudo python3 /home/pi/BLE-Beacon-Scanner/BeaconScanner.py```
 
-9. **detect when the when the sound meet some criteria (volume, frequency)**
+9. **on the _babymike_, detect when the when the sound meet some criteria (volume, frequency)**
    - sources: https://moduliertersingvogel.de/2018/11/07/measure-loudness-with-a-usb-micro-on-a-raspberry-pi, https://python-sounddevice.readthedocs.io/en/0.4.1/examples.html#real-time-text-mode-spectrogram
    
    - ```
@@ -207,28 +207,42 @@ _2. Basic install_
      - as the access to the room may be difficult, the calibration should be done from outside
      - => access to the pi trough SSH from the outside
 
-10. **send the BLE frames when the sound meet these criteria**, and stop them when they stop meeting these criteria, for, eg, 10 seconds in  row
+10. **_on the babymike_: send the BLE frames when the sound meet these criteria**, and stop them when they stop meeting these criteria, for, eg, 10 seconds in  row
      - one UUID per signature per device
      - => major = device ID
      - => minor = signature ID
 
-11. play/display the audio & alarms
-  - on the server
+11. **on the _babyalarm_, play the audio **
+  - _babyalarm_ is a raspberry pi client of the _babyserver_
+  - it also receives the BLE frames
+
+   - on _babyalarm_ itself
+    - may be connected on an HDMI display
+    - VLC could display a visualization
+    - there should be one player per Pi
+  
   - on a smartphone
-    - VLC for Android
+    - audio: VLC for Android
+ 
+12. **on the _babyalarm_ play/display the alarms on BLE detection**
+ - on the server itself show the status as large color blocks
+    - python
+      - on a smartphone
+    - audio: VLC for Android
     - Tasker for the BLE frames: https://forum.frandroid.com/topic/69334-tasker-aideinfoscreation-de-profils/page/9/
+      - the server should relay the BLE frames
 
-  - play a gentle sound
-   https://raspberrypi.stackexchange.com/questions/94098/reliable-way-to-play-sound-ogg-mp3-in-python-on-pi-zero-w
-   https://raspberrypi.stackexchange.com/questions/7088/playing-audio-files-with-python
+  - play a gentle sound:
+   https://raspberrypi.stackexchange.com/questions/94098/reliable-way-to-play-sound-ogg-mp3-in-python-on-pi-zero-w, https://raspberrypi.stackexchange.com/questions/7088/playing-audio-files-with-python
 
-  - show the status as large color blocks
+13. relay to a DECT
+  - would involve a SIP connection to the phone network of the hospital
+  - use ASTERISK?
+  - may play a soud describingg the alarm
 
-12. **play the audio on BLE detection**
+14. autoload on boot
 
-13. Autoload on boot
-
-14. Keepalive
+14. keepalive
 
 _Other references_
 
@@ -240,4 +254,9 @@ _Other references_
   
   
 (note:it seems that the screen connected to the pi should not be hi-res otherwise risk of Radio Interference with Wifi?)
+
+TO calibrate:
+ the Wifi range in the practical setting, the BLE range in the practical setting
+ 
+ 
 
