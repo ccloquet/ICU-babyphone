@@ -207,9 +207,12 @@ _2. Basic install_
      - as the access to the room may be difficult, the calibration should be done from outside
      - => access to the pi trough SSH from the outside
 
-10. **send the BLE frames when the sound meet these criteria**, and stop them when they stop meeting these criteria, for, eg, 10 seconds in  ro
+10. **send the BLE frames when the sound meet these criteria**, and stop them when they stop meeting these criteria, for, eg, 10 seconds in  row
+     - one UUID per signature per device
+     - => major = device ID
+     - => minor = signature ID
 
-11. play/display the alarms
+11. play/display the audio & alarms
   - on the server
   - on a smartphone
     - VLC for Android
@@ -221,9 +224,11 @@ _2. Basic install_
 
   - show the status as large color blocks
 
-12. Autoload on boot
+12. **play the audio on BLE detection**
 
-13. Keepalive
+13. Autoload on boot
+
+14. Keepalive
 
 _Other references_
 
