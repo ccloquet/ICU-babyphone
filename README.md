@@ -194,11 +194,12 @@ _2. Basic install_
      pip3 install sounddevice 
    ```
    
-   - the folloing code displays a real time spectrogram https://python-sounddevice.readthedocs.io/en/0.4.1/examples.html#real-time-text-mode-spectrogram
+   - the following code displays a real time spectrogram https://python-sounddevice.readthedocs.io/en/0.4.1/examples.html#real-time-text-mode-spectrogram
    - eg: ```python3 spectrogram.py -c 160 -r 10 5000 -g 50```
    - ```python3 spectrogram.py -c 10 -r 10 5000 -g 100``` has a smaller number of bins => maybe easier to interpret
    - these data can be used to extract signatures of the alarms
    - TODO: manually build a database (frequencies, volumes -- taking account noise & potential other alarms) 
+   - need to modify the integration time ?
    - it seems that the microphone should be very close to the monitoring -> have a USB cable
    - there should be some minimal calibration made on-site (essentially the gain, but maybe also the signature)
      - as the access to the room may be difficult, the calibration should be done from outside
