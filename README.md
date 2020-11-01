@@ -44,6 +44,8 @@ _1. Material_
     - 1 computer with Ethernet port
     - 1 Ethernet cable (crossover or not)
     - optionally 1 dedicated smartphone per person that should receive the alarms
+    - USB cables for the microphones may be useful
+    - a keyboard & a mini-HDMI to HDMI converter or cable may be useful
     
 _2. Basic install_
 
@@ -198,7 +200,9 @@ _2. Basic install_
    - these data can be used to extract signatures of the alarms
    - TODO: manually build a database (frequencies, volumes -- taking account noise & potential other alarms) 
    - it seems that the microphone should be very close to the monitoring -> have a USB cable
-
+   - there should be some minimal calibration made on-site (essentially the gain, but maybe also the signature)
+     - as the access to the room may be difficult, the calibration should be done from outside
+     - => access to the pi trough SSH from the outside
 
 10. send the BLE frames whe the sound meet these criteria 
 
