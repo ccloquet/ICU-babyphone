@@ -6,6 +6,8 @@ Problem: during the covid-19 crisis, intensive care units (ICU) have been equipp
 
 There is therefore a need for a versatile and robust solution that can relay the alarms of any biomedical device. The following solution is based on a set of Raspberry Pi devices.
 
+![Schema of Babyphone Network](icu_babyphone.png)
+
 
 _0. Features_
 
