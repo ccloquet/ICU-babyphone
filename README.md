@@ -145,6 +145,8 @@ _2. Basic install_
         - on a Pi, using the command: ```cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000```
     
       **from now on, you can listen on any device (rpi, smartphone, ...) the sounds heard by the babymikes**
+      
+      question: max duration? https://www.raspberrypi.org/forums/viewtopic.php?t=149457
     
 7. **from the babymike: send BLE frames**
 
