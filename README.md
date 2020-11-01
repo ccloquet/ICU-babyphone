@@ -28,7 +28,7 @@ _0. Features_
    
  The combination of 1 & 2 is designed for the reliability (should one fail, the other is expected to work)
  
- Note: in this tutorial, a network is created netween the Pi's. Any sufficienty robust/secured network could be used.
+ Note: in this tutorial, a network is created netween the Pi's. It can be completely distinct of the network of the hospital, though it may be linked to it. Any sufficiently robust/secured network could be used.
 
 _1. Material_
 
