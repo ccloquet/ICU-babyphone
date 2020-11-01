@@ -17,13 +17,13 @@ There is therefore a need for a versatile and robust solution that can relay the
 
 _0. Features_
 
- 1. broadcasts the sounds of the alamrs inside the ICU room to any device outside (eg: a smartphone, a computer, ...)
-    - this uses 2 raspberry pi (1 as a mike in the room, 1 as a server outside the room), and, eg, 1 smartphone.
+ 1. broadcasts the sounds of the alarms inside the ICU room to any device outside (eg: a smartphone, a computer, ...)
+    - this uses 2 Raspberry Pi (1 as a mike in the room, 1 as a server outside the room), and, eg, 1 smartphone.
     - technology: RTSP
     - software: FFMPEG, VLC, RTSP-SERVER
  
  2. notifies the user that an alarm is sounding from inside the room
-    - using the same raspberry pis
+    - using the same Raspberry Pis or not
     - technology: Bluetooth Low Energy beacon frames
    
  The combination of 1 & 2 is designed for the reliability (should one fail, the other is expected to work)
