@@ -1,6 +1,6 @@
 # ICU babyphone network
 
-_A modern babyphone solution to transmit ICU units monitoring alarms -- through Wifi and/or Ethernet network -- to a display, a smartphone, a DECT, or any other computer._
+_**Decrease the burden on nursing staff** through a modern babyphone solution that transmits ICU monitoring alarms -- through Wifi and/or Ethernet network -- to multiple displays, dedicated smartphones, DECTs, or any other computer._
 
 **Motivation**: during the Covid-19 crisis, temporary intensive care units (ICU) with isolated rooms have been created and equipped with biomedical equipment (monitoring, ECMOs, ...). These devices sound alarms, but the sound cannot be heard outside the room. Because of the temporary nature of the rooms, the devices are not linked to a central desk like in established ICU. When there is a central desk, no nurse is available to check it. 
 
