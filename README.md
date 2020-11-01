@@ -1,10 +1,16 @@
 # ICU babyphone network
 
-A modern babyphone to transmit ICU units monitoring alarms -- through Wifi/ethernet network -- to a smartphone or any other computer.
+_A modern babyphone solution to transmit ICU units monitoring alarms -- through Wifi and/or Ethernet network -- to a display, a smartphone, a DECT, or any other computer._
 
-Problem: during the covid-19 crisis, intensive care units (ICU) have been equipped with material that sound alarms, but that is not linked to a central desk. Or there is a central desk, but no nurse available to check it. Sometimes, babyphone are used, but they can not be carried by several people at a time, or they are too farto be hearf-d.
+**Motivation**: during the Covid-19 crisis, temporary intensive care units (ICU) with isolated rooms have been created and equipped with biomedical equipment (monitoring, ECMOs, ...). These devices sound alarms, but the sound cannot be heard outside the room. Because of the temporary nature of the rooms, the devices are not linked to a central desk like in established ICU. When there is a central desk, no nurse is available to check it. 
 
-There is therefore a need for a versatile and robust solution that can relay the alarms of any biomedical device. The following solution is based on a set of Raspberry Pi devices.
+Sometimes, babyphones are used to transmit the alarms from the room, but they cannot be carried by several people at a time, they are too far to be heard and their alarms are not specific: it is often difficult to distinguish which device is triggering the alarm, which causes losses of time.
+
+There is therefore a need for a versatile and robust solution that can relay the alarms of any biomedical device and specify which device is sounding. The following solution is based on a set of Raspberry Pi devices.
+
+
+**Proposed solution**
+
 
 ![Schema of Babyphone Network](icu_babyphone.png)
 
