@@ -96,8 +96,10 @@ _2. Basic install_
       ```cvlc -A alsa,none --alsa-audio-device default http://icecast.omroep.nl/radio2-bb-mp3.m3u```
     
     - streaming on the babymike itself
-       ```ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://localhost:1234
-       cvlc -A alsa,none --alsa-audio-device default rtp://localhost:1234```
+       ```
+       ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://localhost:1234
+       cvlc -A alsa,none --alsa-audio-device default rtp://localhost:1234
+       ```
     
     - does this work?
        on the mike: ```ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://192.168.4.1:1234```
