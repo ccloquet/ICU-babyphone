@@ -191,8 +191,7 @@ _2. Basic install_
      cd
      sudo ldconfig
      pip3 install numpy
-     pip3 install sounddevice 
-   ```
+     pip3 install sounddevice```
    
    - the following code displays a real time spectrogram https://python-sounddevice.readthedocs.io/en/0.4.1/examples.html#real-time-text-mode-spectrogram
    - eg: ```python3 spectrogram.py -c 160 -r 10 5000 -g 50```
