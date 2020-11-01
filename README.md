@@ -58,18 +58,19 @@ _2. Basic install_
     - change the default SSH password using the passwd command
     - sudo raspi-config
       - enter hostname:
-        - for the servers, eg, babyserver000 (babyserver000)
-        - for the microphones, eg, babymike000 (babymike000, babymike001, ...)
+        - for the servers, eg, babyserver000 (babyserverXXX)
+        - for the microphones, eg, babymike000, babymike001, ... (_babymikeYYY_)
       - optional: wireless lan (not needed if your compute shares its internet connection through the ethernet cable)
         - the local wifi router should be in 2.4 Ghz
         - enter the SSID & password of your local wifi router
       - reboot
     - connect again through ethernet cable
       - from now on, the Pi can be accessed through the ethernet cable using {hostname}.local instead of raspberrypi.local
-      - ~~~
+      - ```
         sudo apt-get update
         sudo apt-get upgrade
         sudo apt-get install git vim vlc ffmpeg
+        ```
 
 3. Configure the _babyserverXXX_ as an accesspoint 
      - follow: https://www.raspberrypi.org/documentation/configuration/wireless/access-point-routed.md
@@ -84,10 +85,10 @@ _2. Basic install_
   
 5. basic streaming from _babymikeXXX_ to _babyserverXXX_ (just for test, wont be used in prod)
     - source : https://blog.mutsuda.com/raspberry-pi-into-an-audio-spying-device-7a56e7a9090e#.fr4l82xek
-    - connect the usb microphone to the babymike
+    - connect the usb microphone to the _babymike_
     - on the babymikeXXX:  ```arecord -D plughw:1,0 -f dat | ssh -C pi@192.168.4.1 aplay -f dat```
-    - enter the password of the babyserverXXX
-    - listen on the babyserver (through HDMI or through headphones)
+    - enter the password of the _babyserverXXX_
+    - listen on the _babyserver_ (through HDMI or through headphones)
    
 6. more advanced streaming (with compression & server)
     
@@ -108,7 +109,7 @@ _2. Basic install_
    b. setting up a streaming server using https://github.com/revmischa/rtsp-server
    
       
-     to install, on the babyserver:
+     to install, on the _babyserver_:
      
       ```
       sudo apt-get install git libmoose-perl liburi-perl libmoosex-getopt-perl libsocket6-perl libanyevent-perl
@@ -122,19 +123,19 @@ _2. Basic install_
       sudo make install
       ```  
      
-      **to run, on the babyserver:**
+      **to run, on the _babyserver_:**
       ```  
       sudo -b /home/pi/rtsp-server/rtsp-server.pl
       ```   
   
-      **to run, on the babymike:**
+      **to run, on the _babymike_:**
       ```
       sudo -b ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtsp rtsp://192.168.4.1:5545/babymike000
       ```
 
       then, read on on any device connected on the network, eg:
         - on a smartphone, using VLC/VLC for Android/... 
-        - on a pi, using the command: ```cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000```
+        - on a Pi, using the command: ```cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000```
     
       **from now on, you can listen on any device (rpi, smartphone, ...) the sounds heard by the babymikes**
     
