@@ -9,7 +9,7 @@ Sometimes, babyphones are used to transmit the alarms from the room, but they ca
 There is therefore a need for a versatile and robust solution that can relay the alarms of any biomedical device and specify which device is ringing. The following solution is based on a set of Raspberry Pi devices.
 
 
-**Proposed solution** (work in progress)
+**Proposed solution** (work in progress - t be adapted to the reality of the field)
 
 
 ![Schema of Babyphone Network](icu_babyphone.png)
