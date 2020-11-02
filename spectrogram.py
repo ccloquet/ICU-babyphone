@@ -4,6 +4,7 @@
 import argparse
 import math
 import shutil
+import os
 
 import numpy as np
 import sounddevice as sd
@@ -15,9 +16,9 @@ f = open('data.csv','w')
 noise_spectrum = []
 noise_thresh = 2;
 alarm_types  = {
-        'ALARM SPECTR': {'nsamples':10, 'thresh': {4:2}},
-        'NORMAL BEEP':  {'nsamples':3,  'thresh': {6:3, 'default':-3}},
-        'NO ALARM':     {'nsamples':50, 'thresh': {'default':0}}
+        'ALARM SPECTR': {'nsamples':10, 'thresh': {3:4},               'ble_id': '00 01 00 02 C8 00' }, # major= 256,  minor = 712
+        'NORMAL BEEP':  {'nsamples':3,  'thresh': {6:3, 'default':-3}, 'ble_id': '00 01 00 01 C8 00' }, # major = 256, minor = 456
+        'NO ALARM':     {'nsamples':50, 'thresh': {'default':0},       'ble_id': '00 01 00 09 C8 00' }  # major = 256, minor = 2504
         }
 
 # liste the caracteristics of the alarms spectra in decreasing order of importance
@@ -34,6 +35,8 @@ def publish_alarm(alarm_name):
     global alarm_types
     print('-> ' + alarm_name)
     #print(alarm_types[alarm_name])
+    if alarm_name in alarm_types:
+        os.system('hcitool -i hci0 cmd 0x08 0x0008 1E 02 01 06 1A FF 4C 00 02 15 C7 C1 A1 BF BB 00 4C AD 87 04 9F 2D 29 17 DE D2' + alarm_types[alarm_name]['ble_id'])
 
     return
 
@@ -166,6 +169,13 @@ colors = 30, 34, 35, 91, 93, 97
 chars = ' :%#\t#%:'
 gradient = []
 history = []
+
+
+os.system('hciconfig hci0 up')
+os.system('hciconfig hci0 leadv 3')
+os.system('hcitool -i hci0 cmd 0x08 0x0008 1E 02 01 06 1A FF 4C 00 02 15 C7 C1 A1 BF BB 00 4C AD 87 04 9F 2D 29 17 DE D2' + alarm_types['NO ALARM']['ble_id'])
+
+
 for bg, fg in zip(colors, colors[1:]):
     for char in chars:
         if char == '\t':
