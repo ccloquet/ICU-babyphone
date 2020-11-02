@@ -284,7 +284,7 @@ There is therefore a need for a versatile and robust solution that can relay the
   - through XMPP
   - a dedicated app that polls the _babyserver_
   
-## 7 Relay the sounds/alarms to a DECT <a name="dect"></a>
+## 7. Relay the sounds/alarms to a DECT <a name="dect"></a>
   - would involve a SIP connection to the phone network of the hospital
   - use ASTERISK?
   - may play a sound describing the alarm
@@ -297,7 +297,7 @@ There is therefore a need for a versatile and robust solution that can relay the
 
 ### 8.2. Autoload on boot
 
-## Other references <a name="refs"></a>
+## 9. Other references <a name="refs"></a>
 
   - FFMPEG streaming: https://trac.ffmpeg.org/wiki/StreamingGuide, https://www.raspberrypi.org/forums/viewtopic.php?t=226843, http://sharonleal.me/, http://iltabiai.github.io/2018/03/17/rpi-stream.html, https://blog.tremplin.ens-lyon.fr/GerardVidal/faire-du-streaming-live-avec-une-raspberry-pi-et-les-ressources-de-lens-ife.html, https://raspberrypi.stackexchange.com/questions/32677/setup-microphone-stream-and-turn-your-raspberry-pi-into-a-baby-phone
   - VLC: https://www.videolan.org/streaming-features.html
