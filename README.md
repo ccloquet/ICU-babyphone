@@ -39,7 +39,7 @@ There is therefore a need for a versatile and robust solution that can relay the
    
  The combination of 1 & 2 is designed for the reliability (should one fail, the other is expected to work). See the discussion about reliability in the issues.
  
- Note: in this tutorial, a network is created netween the Pi's. It can be completely distinct of the network of the hospital, though it may be linked to it. Any sufficiently robust/secured network could be used.
+ Note: in this tutorial, a network is created between the Pi's. It can be completely distinct of the network of the hospital, though it may be linked to it. Any sufficiently robust/secured network could be used.
 
 ## 1. Material
   - let n<sub>m</sub> be the number of microphones (_babymikeXXX_), n<sub>s</sub> be the number of servers (_babyserverXXX_), n<sub>r</sub> the number of receivers (_babyreceiverXXX_), and n<sub>tot</sub> = n<sub>m</sub> + n<sub>s</sub> + n<sub>a</sub>.
@@ -126,9 +126,8 @@ There is therefore a need for a versatile and robust solution that can relay the
        on the server: ```cvlc -A alsa,none --alsa-audio-device default rtp://192.168.4.1:1234```
    
 ### 4.2 Advanced streaming (with compression & server -- for production)
-  - setting up a streaming server using https://github.com/revmischa/rtsp-server
- 
-  - **to install, on the _babyserver_:**
+  
+  - **to install a streaming server on the _babyserver_:**
     ```
     sudo apt-get install libmoose-perl liburi-perl libmoosex-getopt-perl libsocket6-perl libanyevent-perl
     sudo cpan AnyEvent::MPRPC::Client
@@ -156,28 +155,26 @@ There is therefore a need for a versatile and robust solution that can relay the
     - on a Pi (eg: _babyreceiver_), using the command: ```cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000```
       
   - question/issue: max duration? https://www.raspberrypi.org/forums/viewtopic.php?t=149457
-
-### 4.3. **On the _babyalarm_, play the audio **
-  - _babyalarm_ is a raspberry pi client of the _babyserver_
+  - source:  https://github.com/revmischa/rtsp-server
+  
+### 4.3. **On the _babyalarm_, play the audio**
+  - _babyalarm_ is a Raspberry Pi client of the _babyserver_
   - it also receives the BLE frames
 
    - on _babyalarm_ itself
-    - may be connected on an HDMI display
-    - VLC could display a visualization
-    - there should be one player per Pi
+     - may be connected on an HDMI display
+     - VLC could display a visualization
+     - there should be one player per Pi
   
   - on a smartphone
     - audio: VLC for Android
     
 ## 5. Transmission of digital alarms using Bluetooth Low Energy beacon mode
   - **goal**
-    - to send more specific information (which device is ringing)
-    - to have a backup link if the ffmpeg stream/Wifi does not work**
+    - to send more specific information (=which device precisely is ringing)
+    - to have a backup link if the ffmpeg stream/Wifi does not work
     
 ### 5.1. **From the babymike: send BLE frames**
-
-  - source: https://medium.com/@bhargavshah2011/converting-raspberry-pi-3-into-beacon-f01b3169e12f (explains with Eddystone), https://pimylifeup.com/raspberry-pi-ibeacon/ (explains with BLE + how to generate uuid)
-
   - to start:
     ```
     sudo hciconfig hci0 up
@@ -185,12 +182,13 @@ There is therefore a need for a versatile and robust solution that can relay the
     sudo hcitool -i hci0 cmd 0x08 0x0008 1c 02 01 06 03 03 aa fe 14 16 aa fe 10 00 02 63 69 72 63 75 69 74 64 69 67 65 73 74 07 00 00 00
     ```
     
-   - to stop: 
+  - to stop: 
     ```sudo hciconfig hci0 down```
-    
+
+  - source: https://medium.com/@bhargavshah2011/converting-raspberry-pi-3-into-beacon-f01b3169e12f (explains with Eddystone), https://pimylifeup.com/raspberry-pi-ibeacon/ (explains with BLE + how to generate uuid)
+
 ### 5.2. **On the _babyserver_: receive BLE frames**
   - **goal: on receiving a particular UUID, sound an alarm (may be a gentle music)/show something on the screen**
-  - uses https://github.com/singaCapital/BLE-Beacon-Scanner
       
   - install:
     ```
@@ -204,6 +202,8 @@ There is therefore a need for a versatile and robust solution that can relay the
   ```sudo python3 /home/pi/BLE-Beacon-Scanner/BeaconScanner.py```
 
   - TODO: adapt the code (eg: remove all the unneeded parts, sound an alarm on frame detection, etc)
+  
+  - source: https://github.com/singaCapital/BLE-Beacon-Scanner
   
 ### 5.3. **On the _babymike_, detect when the when the sound meets some criteria (volume, frequency)**
    
