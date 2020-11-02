@@ -219,8 +219,8 @@ There is therefore a need for a versatile and robust solution that can relay the
      sudo make install
      cd
      sudo ldconfig
-     pip3 install numpy
-     pip3 install sounddevice
+     sudo pip3 install numpy
+     sudo pip3 install sounddevice
      ```
    
    - spectrogram.py (in this repo) displays a real time spectrogram: 
