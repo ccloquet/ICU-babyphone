@@ -22,7 +22,7 @@ There is therefore a need for a versatile and robust solution that can relay the
 3. [Establish a WiFi network between the Pi's](#wifi)
 4. [Audio streaming](#audiostreaming)
 5. [Detect when the when the sound meets some criteria (volume, frequency)](#detect)
-6. [Transmission of alarms uthrough a digital channel](#digitalalarms)
+6. [Transmission of alarms through a digital channel](#digitalalarms)
 7. [Relay the sounds/alarms to a DECT](#dect)
 8. [Finalisation](#final)
 9. [Other references](#refs)
