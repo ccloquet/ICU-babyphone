@@ -10,6 +10,70 @@ import sounddevice as sd
 
 usage_line = ' press <enter> to quit, +<enter> or -<enter> to change scaling '
 
+f = open('data.csv','w')
+
+def extract_alarm_type(history, buffer_size, thresh):
+
+    L = len(history[0])
+    ok = True
+    for i in range(0,buffer_size):
+        #print('****' + str(history[i][mybin]))
+        for j in range (0, L):
+            if j in thresh:
+                if np.sign(thresh[j]) * history[i][j] < thresh[j]:
+                    #print('a', history[i][j], thresh[j])
+                    ok = False
+                    break;
+            elif 'default' in thresh:
+                if np.sign(thresh['default']) * history[i][j] < thresh['default']:
+                    ok = False
+                    break;
+    return ok
+
+def analyze_magnitude(history, magnitude):
+    m = np.round(np.array(magnitude),2)
+    mas = ';'.join(m.astype(str)).replace('.', ',')
+    #print(mas)
+    f.write(mas + '\n') #Give your csv text here.
+    history_length = 20
+
+    history.insert(0,m)
+    if len(history) > history_length:
+        history.pop()
+    else:
+        return history
+
+    alarm_type = '';
+    noise_thresh = 2
+
+    # types of conditions
+    # 1) zero, one or more bins are above a certain threshold and the others are below the noise threshold
+    # 2) one or more bins are above a certain theshold, and no conditions for the other bins
+    # instead of absolute values, use relative ones
+
+    #NORMAL BEEP
+    if alarm_type == '':
+        thresh = {6:3, 'default':-noise_thresh} # positive value: require that this bin is above ; negative value: require that this bin is below
+        alarm_type = 'NORMAL BEEP' if extract_alarm_type(history, 3, thresh) == True else ''
+
+    #ALARM SOUND
+    if alarm_type == '':
+        thresh = {3:3}
+        alarm_type = 'ALARM SPECTRO' if extract_alarm_type(history, 10, thresh) == True else ''
+    #NO ALARM
+    if alarm_type == '':
+        thresh = {'default':-noise_thresh}
+        alarm_type = 'NO ALARM' if extract_alarm_type(history, history_length, thresh) == True else ''
+
+    if alarm_type != '':
+        print(alarm_type)
+
+    #UNDETERMINED LOUD SOUND
+    s = int(sum(magnitude))
+    if s > 10:
+        print('LOUD' + str(s));
+
+    return history
 
 def int_or_str(text):
     """Helper function for argument parsing."""
@@ -62,6 +126,7 @@ if high <= low:
 colors = 30, 34, 35, 91, 93, 97
 chars = ' :%#\t#%:'
 gradient = []
+history = []
 for bg, fg in zip(colors, colors[1:]):
     for char in chars:
         if char == '\t':
@@ -77,6 +142,8 @@ try:
     low_bin = math.floor(low / delta_f)
 
     def callback(indata, frames, time, status):
+        global history ## this should actually be passed as an argument of the callback -> need to modify the plugin too
+
         if status:
             return
             print(status)
@@ -85,10 +152,7 @@ try:
         if any(indata):
             magnitude = np.abs(np.fft.rfft(indata[:, 0], n=fftsize))
             magnitude *= args.gain / fftsize
-            s=int(sum(magnitude))
-            if s>10:
-                print('ALARM')
-            #print(magnitude)
+            history = analyze_magnitude(history, magnitude)
             #it is in this magnitude that you find the data for the signatures
 
             line = (gradient[int(np.clip(x, 0, 1) * (len(gradient) - 1))]
