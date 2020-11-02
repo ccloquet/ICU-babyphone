@@ -252,7 +252,17 @@ There is therefore a need for a versatile and robust solution that can relay the
     - play a gentle sound:
    https://raspberrypi.stackexchange.com/questions/94098/reliable-way-to-play-sound-ogg-mp3-in-python-on-pi-zero-w, https://raspberrypi.stackexchange.com/questions/7088/playing-audio-files-with-python
  - on a smartphone
-    - Tasker for the BLE frames: https://forum.frandroid.com/topic/69334-tasker-aideinfoscreation-de-profils/page/9/
+    - Tasker for the BLE frames: https://forum.frandroid.com/topic/69334-tasker-aideinfoscreation-de-profils/page/9/ (not working for ibeacons ?)
+    - **Beacon Locator**: https://play.google.com/store/apps/details?id=com.samebits.beacon.locator&hl=en
+      - https://www.reddit.com/r/tasker/comments/6k8g2k/ibeacon_radbeacon_a_simple_way_to_use_beacons/
+      - no need for tasker
+      - just use the notification feature of Beacon Locator
+      - how long does it need after the beacon transmission has been initiated?
+        - background scan every 60 seconds => 30 seconds on average... too long
+        - => need to develop a dedicated app?
+      - is it working on the long run?
+      - is the app not killed by the battery optimizer?
+      - reliable?
   
 ## 6. Relay the sounds/alarms to a DECT <a name="dect"></a>
   - would involve a SIP connection to the phone network of the hospital
