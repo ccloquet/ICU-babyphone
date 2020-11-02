@@ -15,6 +15,15 @@ There is therefore a need for a versatile and robust solution that can relay the
 ![Schema of Babyphone Network](icu_babyphone.png)
 
 ## Table of contents
+0. Features
+1. Material
+2. Basic install
+3. Establish a network between the Pi's
+4. Audio streaming
+5. Transmission of digital alarms using Bluetooth Low Energy beacon mode
+6. Relay the sounds/alarms to a DECT
+7. Finalisation
+_Other references_
 
 ## 0. Features
 
@@ -110,7 +119,7 @@ There is therefore a need for a versatile and robust solution that can relay the
        on the mike: ```ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://192.168.4.1:1234```
        on the server: ```cvlc -A alsa,none --alsa-audio-device default rtp://192.168.4.1:1234```
    
-## 4.2 Advanced streaming (with compression & server)
+### 4.2 Advanced streaming (with compression & server)
   - setting up a streaming server using https://github.com/revmischa/rtsp-server
  
   - **to install, on the _babyserver_: **
@@ -142,7 +151,7 @@ There is therefore a need for a versatile and robust solution that can relay the
       
   - question/issue: max duration? https://www.raspberrypi.org/forums/viewtopic.php?t=149457
     
-## 5. Transmission of digital alarms using bluetooth
+## 5. Transmission of digital alarms using Bluetooth Low Energy beacon mode
 
 ### 5.1. **From the babymike: send BLE frames**
 
@@ -234,7 +243,7 @@ There is therefore a need for a versatile and robust solution that can relay the
   - play a gentle sound:
    https://raspberrypi.stackexchange.com/questions/94098/reliable-way-to-play-sound-ogg-mp3-in-python-on-pi-zero-w, https://raspberrypi.stackexchange.com/questions/7088/playing-audio-files-with-python
 
-### 6. Relay the sounds/alarms to a DECT
+## 6. Relay the sounds/alarms to a DECT
   - would involve a SIP connection to the phone network of the hospital
   - use ASTERISK?
   - may play a soud describingg the alarm
@@ -245,7 +254,7 @@ There is therefore a need for a versatile and robust solution that can relay the
   - send a BLE frame every 10 seconds
   - if two in a row are missing => sound an alarm
 
-## 7.2. Autoload on boot
+### 7.2. Autoload on boot
 
 ## _Other references_
 
