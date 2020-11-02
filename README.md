@@ -2,7 +2,7 @@
 
 _**Decrease the burden on nursing staff** through a modern babyphone solution that transmits **identifiable** ICU monitoring alarms to **multiple** displays, dedicated smartphones, DECTs, or any other computer._
 
-**Motivation**: during the Covid-19 crisis, temporary intensive care units (ICU) with isolated rooms have been created and equipped with biomedical equipment (monitoring, ECMOs, ...). These devices sound alarms, but often the sound cannot be heard outside the room. Because of the temporary nature of the rooms, the devices are not linked to a central desk like in established ICU. When there is a central desk, no nurse is available to check it. 
+**Motivation**: during the Covid-19 crisis, temporary intensive care units (ICU) with isolated rooms have been created and equipped with biomedical equipment (monitoring, ECMOs, ...). These devices fire alarms, but often the sound cannot be heard outside the room. Because of the temporary nature of the rooms, the devices are not linked to a central desk like in established ICU. When there is a central desk, no nurse is available to check it. 
 
 Sometimes, babyphones are used to transmit the alarms from the room, but they cannot be carried by several people at a time, they are too far to be heard and their alarms are not specific: it is often difficult to distinguish which device is ringing, and that causes either losses of time and energy for the staff (false positives), or degraded care to the patients (false negatives).
 
@@ -227,9 +227,7 @@ There is therefore a need for a versatile and robust solution that can relay the
      ```cd
      wget https://raw.githubusercontent.com/ccloquet/ICU-babyphone/main/spectrogram.py?token=ABOSWY6MT3VZS3DM4226GN27VA5TE
      ```
-     - eg:
-       ```python3 spectrogram.py -c 160 -r 10 5000 -g 50```
-       ```python3 spectrogram.py -c 10 -r 10 5000 -g 100``` has a smaller number of bins => maybe easier to interpret
+     - eg: ```sudo python3 spectrogram.py -c 16 -r 16 5000 -g 100``` 
    - these data can be used to extract signatures of the alarms
    - TODO: manually build a database (frequencies, volumes -- taking account noise & potential other alarms) 
    - need to modify the integration time ?
@@ -239,23 +237,23 @@ There is therefore a need for a versatile and robust solution that can relay the
      - => access to the pi trough SSH from the outside
    - sources: https://moduliertersingvogel.de/2018/11/07/measure-loudness-with-a-usb-micro-on-a-raspberry-pi, https://python-sounddevice.readthedocs.io/en/0.4.1/examples.html#real-time-text-mode-spectrogram
 
-### 5.4. **_On the babymike_: send the BLE frames when the sound meet these criteria**, and stop them when they stop meeting these criteria, for, eg, 10 seconds in  row
-  - one UUID per signature per device
-  - => major = device ID
-  - => minor = signature ID
+### 5.4. **_On the babymike_: send the BLE frames when the sound meets these criteria**, and stop them when they stop meeting these criteria, for, eg, 10 seconds in  row
+  - in spectrogram.py:
+    - one UUID per signature per device
+    - => major = device ID
+    - => minor = signature ID
 
 ### 5.5. **On the _babyserver_, rebroadcast the Bluetooth frames**
 
 ### 5.6. **On the _babyreceiver_ play/display the alarms on BLE detection**
  - on the _babyreceiver_ itself, show the status as large color blocks
     - python
+    - use BLE-Beacon-Scanner.py
     - play a gentle sound:
    https://raspberrypi.stackexchange.com/questions/94098/reliable-way-to-play-sound-ogg-mp3-in-python-on-pi-zero-w, https://raspberrypi.stackexchange.com/questions/7088/playing-audio-files-with-python
  - on a smartphone
-    - audio: VLC for Android
     - Tasker for the BLE frames: https://forum.frandroid.com/topic/69334-tasker-aideinfoscreation-de-profils/page/9/
-  - the _babyservers_ should relay the BLE frames
-
+  
 ## 6. Relay the sounds/alarms to a DECT <a name="dect"></a>
   - would involve a SIP connection to the phone network of the hospital
   - use ASTERISK?
