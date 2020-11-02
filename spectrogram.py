@@ -12,66 +12,105 @@ usage_line = ' press <enter> to quit, +<enter> or -<enter> to change scaling '
 
 f = open('data.csv','w')
 
+noise_spectrum = []
+noise_thresh = 2;
+alarm_types  = {
+        'ALARM SPECTR': {'nsamples':10, 'thresh': {4:2}},
+        'NORMAL BEEP':  {'nsamples':3,  'thresh': {6:3, 'default':-3}},
+        'NO ALARM':     {'nsamples':50, 'thresh': {'default':0}}
+        }
+
+# liste the caracteristics of the alarms spectra in decreasing order of importance
+# positive value in thresh: require that this bin is above ; negative value: require that this bin is below
+# null value : reguire that below the noise spectrum
+
+# types of conditions
+# 1) zero, one or more bins are above a certain threshold and the others are below the noise threshold
+# 2) one or more bins are above a certain theshold, and no conditions for the other bins
+# instead of absolute values, use relative ones
+
+def publish_alarm(alarm_name):
+
+    global alarm_types
+    print('-> ' + alarm_name)
+    #print(alarm_types[alarm_name])
+
+    return
+
 def extract_alarm_type(history, buffer_size, thresh):
+
+    a = [np.round(history[0][j],3) if history[0][j] > noise_spectrum[j] else 0 for j in range(0,20)];
+    b = [str(x) if x > 0 else ''for x in a];
+    if (buffer_size == 3) & (sum(a) > 0):
+        print("{: >5} {: >5} {: >5} {: >5} {: >5} {: >5} {: >5} {: >5} {: >5} {: >5} {: >5} {: >5} {: >5} {: >5} {: >5} {: >5} {: >5} {: >5} {: >5}".format(*b))
 
     L = len(history[0])
     ok = True
     for i in range(0,buffer_size):
         #print('****' + str(history[i][mybin]))
+
         for j in range (0, L):
             if j in thresh:
                 if np.sign(thresh[j]) * history[i][j] < thresh[j]:
-                    #print('a', history[i][j], thresh[j])
                     ok = False
                     break;
             elif 'default' in thresh:
-                if np.sign(thresh['default']) * history[i][j] < thresh['default']:
-                    ok = False
-                    break;
+                if thresh['default'] == 0:
+                    if history[i][j] > noise_spectrum[j]:
+                        ok = False
+                        break;
+                else:
+                    if np.sign(thresh['default']) * history[i][j] < thresh['default']:
+                        ok = False
+                        break;
     return ok
 
-def analyze_magnitude(history, magnitude):
-    m = np.round(np.array(magnitude),2)
+def analyze_magnitude(history, magnitude, whattodo):
+    global alarm_types
+    global noise_spectrum
+
+    m = np.round(np.array(magnitude),4)
     mas = ';'.join(m.astype(str)).replace('.', ',')
     #print(mas)
     f.write(mas + '\n') #Give your csv text here.
-    history_length = 20
 
-    history.insert(0,m)
+    history_length = 200 #100a
+
+    history.insert(0,magnitude)
     if len(history) > history_length:
         history.pop()
     else:
         return history
 
-    alarm_type = '';
-    noise_thresh = 2
+    if whattodo== 'check_noise':
+        #background noise calibration
+        #should be more careful than that
+        avg = np.average(history, 0)
+        std = np.std(history, 0)
 
-    # types of conditions
-    # 1) zero, one or more bins are above a certain threshold and the others are below the noise threshold
-    # 2) one or more bins are above a certain theshold, and no conditions for the other bins
-    # instead of absolute values, use relative ones
+        coeff = 10
+        noise_spectrum = np.add(avg,np.multiply(coeff,std));
 
-    #NORMAL BEEP
-    if alarm_type == '':
-        thresh = {6:3, 'default':-noise_thresh} # positive value: require that this bin is above ; negative value: require that this bin is below
-        alarm_type = 'NORMAL BEEP' if extract_alarm_type(history, 3, thresh) == True else ''
+        print('noise_spectrum')
+        print(noise_spectrum)
 
-    #ALARM SOUND
-    if alarm_type == '':
-        thresh = {3:3}
-        alarm_type = 'ALARM SPECTRO' if extract_alarm_type(history, 10, thresh) == True else ''
-    #NO ALARM
-    if alarm_type == '':
-        thresh = {'default':-noise_thresh}
-        alarm_type = 'NO ALARM' if extract_alarm_type(history, history_length, thresh) == True else ''
+    elif whattodo=='check_alarm':
 
-    if alarm_type != '':
-        print(alarm_type)
+        alarm_type = ''
+        for alarm_name, val in alarm_types.items():
+            if alarm_type == '':
+                alarm_type = alarm_name if extract_alarm_type(history, val['nsamples'], val['thresh']) == True else ''
+            else:
+                break
 
-    #UNDETERMINED LOUD SOUND
-    s = int(sum(magnitude))
-    if s > 10:
-        print('LOUD' + str(s));
+        if alarm_type == '':
+            #UNDETERMINED LOUD SOUND
+            s = int(sum(magnitude))
+            if s > 10:
+                alarm_type = 'LOUD' + str(s);
+
+        if alarm_type != '':
+            publish_alarm(alarm_type)
 
     return history
 
@@ -152,7 +191,12 @@ try:
         if any(indata):
             magnitude = np.abs(np.fft.rfft(indata[:, 0], n=fftsize))
             magnitude *= args.gain / fftsize
-            history = analyze_magnitude(history, magnitude)
+
+            if len(noise_spectrum) == 0:
+                history = analyze_magnitude(history, magnitude, 'check_noise')
+            else:
+                history = analyze_magnitude(history, magnitude, 'check_alarm')
+
             #it is in this magnitude that you find the data for the signatures
 
             line = (gradient[int(np.clip(x, 0, 1) * (len(gradient) - 1))]
