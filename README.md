@@ -2,11 +2,11 @@
 
 _**Decrease the burden on nursing staff** through a modern babyphone solution that transmits *identifiable* ICU monitoring alarms to *multiple* displays, dedicated smartphones, DECTs, or any other computer._
 
-**Motivation**: during the Covid-19 crisis, temporary intensive care units (ICU) with isolated rooms have been created and equipped with biomedical equipment (monitoring, ECMOs, ...). These devices sound alarms, but the sound cannot be heard outside the room. Because of the temporary nature of the rooms, the devices are not linked to a central desk like in established ICU. When there is a central desk, no nurse is available to check it. 
+**Motivation**: during the Covid-19 crisis, temporary intensive care units (ICU) with isolated rooms have been created and equipped with biomedical equipment (monitoring, ECMOs, ...). These devices sound alarms, but often the sound cannot be heard outside the room. Because of the temporary nature of the rooms, the devices are not linked to a central desk like in established ICU. When there is a central desk, no nurse is available to check it. 
 
-Sometimes, babyphones are used to transmit the alarms from the room, but they cannot be carried by several people at a time, they are too far to be heard and their alarms are not specific: it is often difficult to distinguish which device is triggering the alarm, which causes either losses of time and energy for the staff (false positives), or degraded care to the patients (false negatives).
+Sometimes, babyphones are used to transmit the alarms from the room, but they cannot be carried by several people at a time, they are too far to be heard and their alarms are not specific: it is often difficult to distinguish which device is ringing, and that causes either losses of time and energy for the staff (false positives), or degraded care to the patients (false negatives).
 
-There is therefore a need for a versatile and robust solution that can relay the alarms of any biomedical device and specify which device is sounding. The following solution is based on a set of Raspberry Pi devices.
+There is therefore a need for a versatile and robust solution that can relay the alarms of any biomedical device and specify which device is ringing. The following solution is based on a set of Raspberry Pi devices.
 
 
 **Proposed solution** (work in progress)
@@ -14,56 +14,58 @@ There is therefore a need for a versatile and robust solution that can relay the
 
 ![Schema of Babyphone Network](icu_babyphone.png)
 
+
 ## Table of contents
 0. Features
 1. Material
 2. Basic install
-3. Establish a network between the Pi's
+3. Establish a WiFi network between the Pi's
 4. Audio streaming
 5. Transmission of digital alarms using Bluetooth Low Energy beacon mode
 6. Relay the sounds/alarms to a DECT
 7. Finalisation
-_Other references_
+8. Other references
 
 ## 0. Features
 
- 1. broadcasts the sounds of the alarms inside the ICU room to any device outside (eg: a smartphone, a computer, ...)
-    - this uses 2 Raspberry Pi (1 as a mike in the room (for more specificity, you can have one mike per device), 1 as a server outside the room), and, eg, 1 dedicated smartphone.
+ 1. **broadcasts the sounds** of the alarms inside an ICU room to any device outside (eg: a smartphone, a computer, ...)
+    - this uses 3 Raspberry Pi (1 as a mike in the room (for more specificity, you can have one mike per device), 1 as a server outside the room and 1 as a receiver). Other devices like, eg, dedicated smartphones can be used. In small setups, the server and the receiver may be the same device.
     - technology: RTSP
     - software: FFMPEG, VLC, RTSP-SERVER
  
- 2. notifies the user that an alarm is sounding from inside the room
-    - using the same Raspberry Pis or not
+ 2. **notifies the user** that an device is ringing from inside the room
+    - using the same Raspberry Pis or not (mike-server-receiver)
     - technology: Bluetooth Low Energy beacon frames
    
- The combination of 1 & 2 is designed for the reliability (should one fail, the other is expected to work)
+ The combination of 1 & 2 is designed for the reliability (should one fail, the other is expected to work). See the discussion about reliability in the issues.
  
  Note: in this tutorial, a network is created netween the Pi's. It can be completely distinct of the network of the hospital, though it may be linked to it. Any sufficiently robust/secured network could be used.
 
 ## 1. Material
-
-  - let n<sub>d</sub> be the number of detectors, n<sub>s</sub> be the number of servers and n<sub>tot</sub> = n<sub>d</sub> + n<sub>s</sub>
-  - then you need n<sub>tot</sub> of the following:
-    - 1 raspberry pi 4
-    - 1 official raspberry pi alim (3A)
-    - 1 Kingston 32 Gb class-10 micro SD card
-    - 1 raspberry pi case
-  - you also need n<sub>d</sub> of the following:
-    - 1 USB microphone (this ones works but is of low quality: https://www.amazon.fr/gp/product/B086PH9ZZX -- try to buy from your local shop)
+  - let n<sub>m</sub> be the number of microphones (_babymikeXXX_), n<sub>s</sub> be the number of servers (_babyserverXXX_), n<sub>r</sub> the number of receivers (_babyreceiverXXX_), and n<sub>tot</sub> = n<sub>m</sub> + n<sub>s</sub> + n<sub>a</sub>.
+  - then you need:
+    - n<sub>tot</sub> Raspberry Pi 4
+    - n<sub>tot</sub> official Raspberry Pi alim (3A)
+    - n<sub>tot</sub> Kingston 32 Gb class-10 micro SD card
+    - n<sub>tot</sub> Raspberry Pi case
+  - you also need:
+    - n<sub>m</sub> USB microphone (this [one](https://www.amazon.fr/gp/product/B086PH9ZZX) works but is of low quality:  -- try to buy from your local shop)
   - and finally
     - 1 computer with Ethernet port
     - 1 Ethernet cable (crossover or not)
     - optionally 1 dedicated smartphone per person that should receive the alarms
-    - USB cables for the microphones may be useful
-    - a keyboard & a mini-HDMI to HDMI converter or cable may be useful
+    - may be useful:
+      - USB cables for the microphones 
+      - a keyboard
+      - a mini-HDMI to HDMI converter or cable
     
 ## 2. Basic install
-  - install Raspberry Pi Imager on your computer
-  - share the internet connection of your computer with its ethernet port (in network configuration > properties of the wifi > sharing > over Ethernet)
-  - on each micro SD card
+  - install [Raspberry Pi Imager](https://www.raspberrypi.org/blog/raspberry-pi-imager-imaging-utility/) on your computer
+  - share the internet connection of your computer with its Ethernet port (Windows: in network configuration > properties of the wifi > sharing > over Ethernet)
+  - on each micro-SD card
     - install the Raspbian lite distro (~400 Mb) 
     - create a folder named "ssh" (without quotes) at the root
-  - on each babymike, 
+  - on each _babymike_
       - connect a USB-microphone
   - on each Pi
     - connect the Ethernet cable
@@ -71,8 +73,9 @@ _Other references_
     - change the default SSH password using the ```passwd``` command
     - ```sudo raspi-config```
       - enter hostname:
-        - for the servers, eg, babyserver000 (babyserverXXX)
-        - for the microphones, eg, babymike000, babymike001, ... (_babymikeYYY_)
+        - for the servers, eg, babyserver000 
+        - for the microphones, eg, babymike000, babymike001, ... 
+        - for the receivers, eg, babyreceiver000, babyreceiver001, ... 
       - optional: wireless lan (not needed if your computer shares its internet connection through the ethernet cable)
         - the local wifi router should be in 2.4 Ghz
         - enter the SSID & password of your local wifi router
@@ -82,24 +85,27 @@ _Other references_
       - ```
         sudo apt-get update
         sudo apt-get upgrade
-        sudo apt-get install git vim vlc ffmpeg```
+        sudo apt-get install git vim vlc ffmpeg
+        ```
         
-## 3. Establish a network between the Pi's
+## 3. Establish a WiFi network between the Pi's
 
 ### 3.1 Configure the _babyserverXXX_ as an access point 
   - follow: https://www.raspberrypi.org/documentation/configuration/wireless/access-point-routed.md
   - skip the routing section if you do not want to route to the internet through the ethernet connection
-  - in the 192.168.4.* range (potential conflicts with home router ?)
-  - provides adresses trough DHCP between 192.168.4.2 and 192.168.4.20 (-> can presumably accept fixed ips outside this range)
-  - use ```ssid=babynet```
+  - the above tutorial proposes
+    - the 192.168.4.* range (adjust to avoid conflicts with your other networks)
+    - DHCP adresses attribution between 192.168.4.2 and 192.168.4.20 (adjust in function of the number of devices in your network)
+      - note: can accept fixed ips outside this range
+  - use, eg, ```ssid=babynet000``` as SSID
 
 ### 3.2 Configure the _babymikeXXX_ & _babyalarmXXX_ to connect to the access point
   - follow: https://raspberrypihq.com/how-to-connect-your-raspberry-pi-to-wifi/
-  - any Pi of the network can be accessed from any other Pi
+  - note: any Pi of the network can be accessed from the connection to any other Pi (eg: ssh to _babyserver000_, then from there, ssh to _babymike001_)
   
 ## 4. Audio streaming
 
-### 4.1 Tests on the _babymikeXXX_ (wont be used in prod)
+### 4.1 Tests on the _babymikeXXX_ (won't be used in prod)
   - test the mike: ```sudo arecord --device=hw:1,0 --format S16_LE --rate 44100 -V mono -c1 voice.wav```
   - troubleshooting: https://github.com/synesthesiam/voice2json/issues/28
   - basic streaming from _babymikeXXX_ to _babyserverXXX_ 
@@ -119,10 +125,10 @@ _Other references_
        on the mike: ```ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtp rtp://192.168.4.1:1234```
        on the server: ```cvlc -A alsa,none --alsa-audio-device default rtp://192.168.4.1:1234```
    
-### 4.2 Advanced streaming (with compression & server)
+### 4.2 Advanced streaming (with compression & server -- for production)
   - setting up a streaming server using https://github.com/revmischa/rtsp-server
  
-  - **to install, on the _babyserver_: **
+  - **to install, on the _babyserver_:**
     ```
     sudo apt-get install libmoose-perl liburi-perl libmoosex-getopt-perl libsocket6-perl libanyevent-perl
     sudo cpan AnyEvent::MPRPC::Client
@@ -145,49 +151,64 @@ _Other references_
     sudo -b ffmpeg -re -f alsa -i plughw:1,0 -acodec mp3 -ab 128k -ac 2 -f rtsp rtsp://192.168.4.1:5545/babymike000
     ```
 
-  - **from now on, you can listen on any device of the network (rpi, smartphone, ...) the sounds heard by the babymikes**, eg:
+  - **from now on, you can listen on any device of the network (Pi, smartphone, ...) the sounds heard by the babymikes**, eg:
     - on a smartphone, using VLC/VLC for Android/... 
-    - on a Pi, using the command: ```cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000```
+    - on a Pi (eg: _babyreceiver_), using the command: ```cvlc -A alsa,none --alsa-audio-device default rtsp://192.168.4.1/babymike000```
       
   - question/issue: max duration? https://www.raspberrypi.org/forums/viewtopic.php?t=149457
+
+### 4.3. **On the _babyalarm_, play the audio **
+  - _babyalarm_ is a raspberry pi client of the _babyserver_
+  - it also receives the BLE frames
+
+   - on _babyalarm_ itself
+    - may be connected on an HDMI display
+    - VLC could display a visualization
+    - there should be one player per Pi
+  
+  - on a smartphone
+    - audio: VLC for Android
     
 ## 5. Transmission of digital alarms using Bluetooth Low Energy beacon mode
-
+  - **goal**
+    - to send more specific information (which device is ringing)
+    - to have a backup link if the ffmpeg stream/Wifi does not work**
+    
 ### 5.1. **From the babymike: send BLE frames**
 
-  - **goal: to send alarms to the server, as a backup if the ffmpeg stream does not work**
   - source: https://medium.com/@bhargavshah2011/converting-raspberry-pi-3-into-beacon-f01b3169e12f (explains with Eddystone), https://pimylifeup.com/raspberry-pi-ibeacon/ (explains with BLE + how to generate uuid)
 
-  ```
-  sudo hciconfig hci0 up
-  sudo hciconfig hci0 leadv 3
-  sudo hcitool -i hci0 cmd 0x08 0x0008 1c 02 01 06 03 03 aa fe 14 16 aa fe 10 00 02 63 69 72 63 75 69 74 64 69 67 65 73 74 07 00 00 00
-  ```
+  - to start:
+    ```
+    sudo hciconfig hci0 up
+    sudo hciconfig hci0 leadv 3
+    sudo hcitool -i hci0 cmd 0x08 0x0008 1c 02 01 06 03 03 aa fe 14 16 aa fe 10 00 02 63 69 72 63 75 69 74 64 69 67 65 73 74 07 00 00 00
+    ```
     
-  to stop: 
-  ```sudo hciconfig hci0 down```
+   - to stop: 
+    ```sudo hciconfig hci0 down```
     
 ### 5.2. **On the _babyserver_: receive BLE frames**
   - **goal: on receiving a particular UUID, sound an alarm (may be a gentle music)/show something on the screen**
   - uses https://github.com/singaCapital/BLE-Beacon-Scanner
       
-  install:
-  ```
-  sudo apt-get install python3-pip python3-dev ipython3 bluetooth libbluetooth-dev
-  sudo pip3 install pybluez
-  cd
-  git clone https://github.com/ccloquet/BLE-Beacon-Scanner.git
-  ```
-      
-  this code should be adapted (eg: remove all the unneeded parts, sound an alarm on frame detection, etc)
-
-  basic usage, on the _babyserver_
+  - install:
+    ```
+    sudo apt-get install python3-pip python3-dev ipython3 bluetooth libbluetooth-dev
+    sudo pip3 install pybluez
+    cd
+    git clone https://github.com/ccloquet/BLE-Beacon-Scanner.git
+    ```
+  
+  - basic usage, on the _babyserver_
   ```sudo python3 /home/pi/BLE-Beacon-Scanner/BeaconScanner.py```
 
+  - TODO: adapt the code (eg: remove all the unneeded parts, sound an alarm on frame detection, etc)
+  
 ### 5.3. **On the _babymike_, detect when the when the sound meets some criteria (volume, frequency)**
-  - sources: https://moduliertersingvogel.de/2018/11/07/measure-loudness-with-a-usb-micro-on-a-raspberry-pi, https://python-sounddevice.readthedocs.io/en/0.4.1/examples.html#real-time-text-mode-spectrogram
    
-  - ```
+  - install
+    ```
      sudo apt-get install libasound-dev libatlas-base-dev
      cd
      wget http://www.portaudio.com/archives/pa_stable_v190600_20161030.tgz
@@ -199,14 +220,16 @@ _Other references_
      cd
      sudo ldconfig
      pip3 install numpy
-     pip3 install sounddevice```
+     pip3 install sounddevice
+     ```
    
    - spectrogram.py (in this repo) displays a real time spectrogram: 
-   ```cd
-   wget https://raw.githubusercontent.com/ccloquet/ICU-babyphone/main/spectrogram.py?token=ABOSWY6MT3VZS3DM4226GN27VA5TE
-   ```
-   - eg: ```python3 spectrogram.py -c 160 -r 10 5000 -g 50```
-   - ```python3 spectrogram.py -c 10 -r 10 5000 -g 100``` has a smaller number of bins => maybe easier to interpret
+     ```cd
+     wget https://raw.githubusercontent.com/ccloquet/ICU-babyphone/main/spectrogram.py?token=ABOSWY6MT3VZS3DM4226GN27VA5TE
+     ```
+     - eg:
+       ```python3 spectrogram.py -c 160 -r 10 5000 -g 50```
+       ```python3 spectrogram.py -c 10 -r 10 5000 -g 100``` has a smaller number of bins => maybe easier to interpret
    - these data can be used to extract signatures of the alarms
    - TODO: manually build a database (frequencies, volumes -- taking account noise & potential other alarms) 
    - need to modify the integration time ?
@@ -214,34 +237,24 @@ _Other references_
    - there should be some minimal calibration made on-site (essentially the gain, but maybe also the signature)
      - as the access to the room may be difficult, the calibration should be done from outside
      - => access to the pi trough SSH from the outside
+   - sources: https://moduliertersingvogel.de/2018/11/07/measure-loudness-with-a-usb-micro-on-a-raspberry-pi, https://python-sounddevice.readthedocs.io/en/0.4.1/examples.html#real-time-text-mode-spectrogram
 
-### 5.4.  **_On the babymike_: send the BLE frames when the sound meet these criteria**, and stop them when they stop meeting these criteria, for, eg, 10 seconds in  row
-     - one UUID per signature per device
-     - => major = device ID
-     - => minor = signature ID
+### 5.4. **_On the babymike_: send the BLE frames when the sound meet these criteria**, and stop them when they stop meeting these criteria, for, eg, 10 seconds in  row
+  - one UUID per signature per device
+  - => major = device ID
+  - => minor = signature ID
 
-### 5.5. **On the _babyalarm_, play the audio **
-  - _babyalarm_ is a raspberry pi client of the _babyserver_
-  - it also receives the BLE frames
+### 5.5. **On the _babyserver_, rebroadcast the Bluetooth frames**
 
-   - on _babyalarm_ itself
-    - may be connected on an HDMI display
-    - VLC could display a visualization
-    - there should be one player per Pi
-  
-  - on a smartphone
-    - audio: VLC for Android
- 
-### 5.6. **On the _babyalarm_ play/display the alarms on BLE detection**
- - on the server itself show the status as large color blocks
+### 5.6. **On the _babyreceiver_ play/display the alarms on BLE detection**
+ - on the _babyreceiver_ itself, show the status as large color blocks
     - python
-      - on a smartphone
+    - play a gentle sound:
+   https://raspberrypi.stackexchange.com/questions/94098/reliable-way-to-play-sound-ogg-mp3-in-python-on-pi-zero-w, https://raspberrypi.stackexchange.com/questions/7088/playing-audio-files-with-python
+ - on a smartphone
     - audio: VLC for Android
     - Tasker for the BLE frames: https://forum.frandroid.com/topic/69334-tasker-aideinfoscreation-de-profils/page/9/
-      - the server should relay the BLE frames
-
-  - play a gentle sound:
-   https://raspberrypi.stackexchange.com/questions/94098/reliable-way-to-play-sound-ogg-mp3-in-python-on-pi-zero-w, https://raspberrypi.stackexchange.com/questions/7088/playing-audio-files-with-python
+  - the _babyservers_ should relay the BLE frames
 
 ## 6. Relay the sounds/alarms to a DECT
   - would involve a SIP connection to the phone network of the hospital
