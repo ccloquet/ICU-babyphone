@@ -206,7 +206,7 @@ There is therefore a need for a versatile and robust solution that can relay the
     - to send more specific information (=which device precisely is ringing)
     - to have a backup link if the ffmpeg stream/Wifi does not work
    
-### 6.1. More reliable, using Tasker + bidoismorgan.httpevent app
+### 6.1. Using Tasker + bidoismorgan.httpevent app
   
   - the _babymike_ tiggers a small web server on _babyserver_
   - on receiving the trigger, the webserver send a POST to the smartphones as below. It updates its state so that it can be polled by the _babyreceiver_
