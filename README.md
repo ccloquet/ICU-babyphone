@@ -21,10 +21,11 @@ There is therefore a need for a versatile and robust solution that can relay the
 2. [Basic install](#basicinstall)
 3. [Establish a WiFi network between the Pi's](#wifi)
 4. [Audio streaming](#audiostreaming)
-5. [Transmission of digital alarms using Bluetooth Low Energy beacon mode](#digitalalarms)
-6. [Relay the sounds/alarms to a DECT](#dect)
-7. [Finalisation](#final)
-8. [Other references](#refs)
+5. [Detect when the when the sound meets some criteria (volume, frequency)](#detect)
+6. [Transmission of alarms uthrough a digital channel](#digitalalarms)
+7. [Relay the sounds/alarms to a DECT](#dect)
+8. [Finalisation](#final)
+9. [Other references](#refs)
 
 ## 0. Features <a name="features"></a>
 
@@ -168,45 +169,8 @@ There is therefore a need for a versatile and robust solution that can relay the
   
   - on a smartphone
     - audio: VLC for Android
-    
-## 5. Transmission of digital alarms using Bluetooth Low Energy beacon mode <a name="digitalalarms"></a>
-  - **goal**
-    - to send more specific information (=which device precisely is ringing)
-    - to have a backup link if the ffmpeg stream/Wifi does not work
-    
-### 5.1. **From the babymike: send BLE frames**
-  - to start:
-    ```
-    sudo hciconfig hci0 up
-    sudo hciconfig hci0 leadv 3
-    sudo hcitool -i hci0 cmd 0x08 0x0008 1c 02 01 06 03 03 aa fe 14 16 aa fe 10 00 02 63 69 72 63 75 69 74 64 69 67 65 73 74 07 00 00 00
-    ```
-    
-  - to stop: 
-    ```sudo hciconfig hci0 down```
 
-  - source: https://medium.com/@bhargavshah2011/converting-raspberry-pi-3-into-beacon-f01b3169e12f (explains with Eddystone), https://pimylifeup.com/raspberry-pi-ibeacon/ (explains with BLE + how to generate uuid)
-
-### 5.2. **On the _babyserver_: receive BLE frames**
-  - **goal: on receiving a particular UUID, sound an alarm (may be a gentle music)/show something on the screen**
-      
-  - install:
-    ```
-    sudo apt-get install python3-pip python3-dev ipython3 bluetooth libbluetooth-dev
-    sudo pip3 install pybluez
-    cd
-    git clone https://github.com/ccloquet/BLE-Beacon-Scanner.git
-    ```
-  
-  - basic usage, on the _babyserver_
-  ```sudo python3 /home/pi/BLE-Beacon-Scanner/BeaconScanner.py```
-
-  - TODO: adapt the code (eg: remove all the unneeded parts, sound an alarm on frame detection, etc)
-  
-  - source: https://github.com/singaCapital/BLE-Beacon-Scanner
-  
-### 5.3. **On the _babymike_, detect when the when the sound meets some criteria (volume, frequency)**
-   
+## 5. **On the _babymike_, detect when the when the sound meets some criteria (volume, frequency)**  <a name="detect"></a>
   - install
     ```
      sudo apt-get install libasound-dev libatlas-base-dev
@@ -236,16 +200,66 @@ There is therefore a need for a versatile and robust solution that can relay the
      - as the access to the room may be difficult, the calibration should be done from outside
      - => access to the pi trough SSH from the outside
    - sources: https://moduliertersingvogel.de/2018/11/07/measure-loudness-with-a-usb-micro-on-a-raspberry-pi, https://python-sounddevice.readthedocs.io/en/0.4.1/examples.html#real-time-text-mode-spectrogram
+   
+## 6. Transmission of digital alarms using a digital channel <a name="digitalalarms"></a>
+  - **goal**
+    - to send more specific information (=which device precisely is ringing)
+    - to have a backup link if the ffmpeg stream/Wifi does not work
+   
+### 6.1. More reliable, using Tasker + bidoismorgan.httpevent app
+  
+  - the _babymike_ tiggers a small web server on _babyserver_
+  - on receiving the trigger, the webserver send a POST to the smartphones as below. It updates its state so that it can be polled by the _babyreceiver_
+  - the notification from the _babyserver_ to the smartphone uses Tasker+this plugin: https://play.google.com/store/apps/details?id=bidoismorgan.httpevent
+    - on the server: curl -d "param1=value1&param2=value2" -X POST 192.168.4.17:8765, where the IP adress is the IP **of the phone**
+    - it requires a fixed IP adress (or some mechanism to let the server know the adress)
+    - the server could also broadcast the POST to all the devices connected to it
 
-### 5.4. **_On the babymike_: send the BLE frames when the sound meets these criteria**, and stop them when they stop meeting these criteria, for, eg, 10 seconds in  row
+### 6.2 **Using Bluetooth Low Energy beacons**    
+  - the BLE path as a backup solution only
+  - not really reliable (see 6.2.5 below)
+  
+#### 6.2.1. **From the babymike: send BLE frames**
+  - to start:
+    ```
+    sudo hciconfig hci0 up
+    sudo hciconfig hci0 leadv 3
+    sudo hcitool -i hci0 cmd 0x08 0x0008 1c 02 01 06 03 03 aa fe 14 16 aa fe 10 00 02 63 69 72 63 75 69 74 64 69 67 65 73 74 07 00 00 00
+    ```
+    
+  - to stop: 
+    ```sudo hciconfig hci0 down```
+
+  - source: https://medium.com/@bhargavshah2011/converting-raspberry-pi-3-into-beacon-f01b3169e12f (explains with Eddystone), https://pimylifeup.com/raspberry-pi-ibeacon/ (explains with BLE + how to generate uuid)
+  - increase BLE advertising intrval: https://stackoverflow.com/questions/21124993/is-there-a-way-to-increase-ble-advertisement-frequency-in-bluez/21126744
+
+#### 6.2.2. **On the _babyserver_: receive BLE frames**
+  - **goal: on receiving a particular UUID, fire an alarm (may be a gentle music)/show something on the screen**
+      
+  - install:
+    ```
+    sudo apt-get install python3-pip python3-dev ipython3 bluetooth libbluetooth-dev
+    sudo pip3 install pybluez
+    cd
+    git clone https://github.com/ccloquet/BLE-Beacon-Scanner.git
+    ```
+  
+  - basic usage, on the _babyserver_
+  ```sudo python3 /home/pi/BLE-Beacon-Scanner/BeaconScanner.py```
+
+  - TODO: adapt the code (eg: remove all the unneeded parts, sound an alarm on frame detection, etc)
+  
+  - source: https://github.com/singaCapital/BLE-Beacon-Scanner   
+
+#### 6.2.3. **_On the babymike_: send the BLE frames when the sound meets these criteria**, and stop them when they stop meeting these criteria, for, eg, 10 seconds in  row
   - in spectrogram.py:
     - one UUID per signature per device
     - => major = device ID
     - => minor = signature ID
 
-### 5.5. **On the _babyserver_, rebroadcast the Bluetooth frames**
+#### 6.2.4. **On the _babyserver_, rebroadcast the Bluetooth frames**
 
-### 5.6. **On the _babyreceiver_ play/display the alarms on BLE detection**
+#### 6.2.5. **On the _babyreceiver_ play/display the alarms on BLE detection**
  - on the _babyreceiver_ itself, show the status as large color blocks
     - python
     - use BLE-Beacon-Scanner.py
@@ -258,24 +272,30 @@ There is therefore a need for a versatile and robust solution that can relay the
       - no need for tasker
       - just use the notification feature of Beacon Locator
       - how long does it need after the beacon transmission has been initiated?
-        - background scan every 60 seconds => 30 seconds on average... too long
+        - background scan every 60 seconds => 30 seconds on average, 60 sec max. Add to that smth like 10-20 seconds to detect the alarm and broadcast the first BLE frame + this first frame might be missed => too long
         - => need to develop a dedicated app?
       - is it working on the long run?
       - is the app not killed by the battery optimizer?
       - reliable?
+
+### 6.3. Other notification possibilities
+  - through SIP (see below)
+  - through the sending of an email (works with local server)
+  - through XMPP
+  - a dedicated app that polls the _babyserver_
   
-## 6. Relay the sounds/alarms to a DECT <a name="dect"></a>
+## 7 Relay the sounds/alarms to a DECT <a name="dect"></a>
   - would involve a SIP connection to the phone network of the hospital
   - use ASTERISK?
-  - may play a soud describingg the alarm
+  - may play a sound describing the alarm
 
-## 7. Finalisation <a name="final"></a>
+## 8. Finalisation <a name="final"></a>
 
-### 7.1. Keepalive
+### 8.1. Keepalive
   - send a BLE frame every 10 seconds
   - if two in a row are missing => sound an alarm
 
-### 7.2. Autoload on boot
+### 8.2. Autoload on boot
 
 ## Other references <a name="refs"></a>
 
@@ -290,6 +310,3 @@ There is therefore a need for a versatile and robust solution that can relay the
 
 TO calibrate:
  the Wifi range in the practical setting, the BLE range in the practical setting
- 
- 
-
