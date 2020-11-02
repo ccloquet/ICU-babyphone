@@ -16,17 +16,17 @@ There is therefore a need for a versatile and robust solution that can relay the
 
 
 ## Table of contents
-0. Features
-1. Material
-2. Basic install
-3. Establish a WiFi network between the Pi's
-4. Audio streaming
-5. Transmission of digital alarms using Bluetooth Low Energy beacon mode
-6. Relay the sounds/alarms to a DECT
-7. Finalisation
-8. Other references
+0. [Features](#features)
+1. [Material](#material)
+2. [Basic install](#basicinstall)
+3. [Establish a WiFi network between the Pi's](#wifi)
+4. [Audio streaming](#audiostreaming)
+5. [Transmission of digital alarms using Bluetooth Low Energy beacon mode](#digitalalarms)
+6. [Relay the sounds/alarms to a DECT](#dect)
+7. [Finalisation](#final)
+8. [Other references](#refs)
 
-## 0. Features
+## 0. Features <a name="features"></a>
 
  1. **broadcasts the sounds** of the alarms inside an ICU room to any device outside (eg: a smartphone, a computer, ...)
     - this uses 3 Raspberry Pi (1 as a mike in the room (for more specificity, you can have one mike per device), 1 as a server outside the room and 1 as a receiver). Other devices like, eg, dedicated smartphones can be used. In small setups, the server and the receiver may be the same device.
@@ -41,7 +41,7 @@ There is therefore a need for a versatile and robust solution that can relay the
  
  Note: in this tutorial, a network is created between the Pi's. It can be completely distinct of the network of the hospital, though it may be linked to it. Any sufficiently robust/secured network could be used.
 
-## 1. Material
+## 1. Material <a name="material"></a>
   - let n<sub>m</sub> be the number of microphones (_babymikeXXX_), n<sub>s</sub> be the number of servers (_babyserverXXX_), n<sub>r</sub> the number of receivers (_babyreceiverXXX_), and n<sub>tot</sub> = n<sub>m</sub> + n<sub>s</sub> + n<sub>a</sub>.
   - then you need:
     - n<sub>tot</sub> Raspberry Pi 4
@@ -59,7 +59,7 @@ There is therefore a need for a versatile and robust solution that can relay the
       - a keyboard
       - a mini-HDMI to HDMI converter or cable
     
-## 2. Basic install
+## 2. Basic install <a name="basicinstall"></a>
   - install [Raspberry Pi Imager](https://www.raspberrypi.org/blog/raspberry-pi-imager-imaging-utility/) on your computer
   - share the internet connection of your computer with its Ethernet port (Windows: in network configuration > properties of the wifi > sharing > over Ethernet)
   - on each micro-SD card
@@ -88,7 +88,7 @@ There is therefore a need for a versatile and robust solution that can relay the
         sudo apt-get install git vim vlc ffmpeg
         ```
         
-## 3. Establish a WiFi network between the Pi's
+## 3. Establish a WiFi network between the Pi's <a name="wifi"></a>
 
 ### 3.1 Configure the _babyserverXXX_ as an access point 
   - follow: https://www.raspberrypi.org/documentation/configuration/wireless/access-point-routed.md
@@ -103,7 +103,7 @@ There is therefore a need for a versatile and robust solution that can relay the
   - follow: https://raspberrypihq.com/how-to-connect-your-raspberry-pi-to-wifi/
   - note: any Pi of the network can be accessed from the connection to any other Pi (eg: ssh to _babyserver000_, then from there, ssh to _babymike001_)
   
-## 4. Audio streaming
+## 4. Audio streaming <a name="audiostreaming"></a>
 
 ### 4.1 Tests on the _babymikeXXX_ (won't be used in prod)
   - test the mike: ```sudo arecord --device=hw:1,0 --format S16_LE --rate 44100 -V mono -c1 voice.wav```
@@ -169,7 +169,7 @@ There is therefore a need for a versatile and robust solution that can relay the
   - on a smartphone
     - audio: VLC for Android
     
-## 5. Transmission of digital alarms using Bluetooth Low Energy beacon mode
+## 5. Transmission of digital alarms using Bluetooth Low Energy beacon mode <a name="digitalalarms"></a>
   - **goal**
     - to send more specific information (=which device precisely is ringing)
     - to have a backup link if the ffmpeg stream/Wifi does not work
@@ -256,12 +256,12 @@ There is therefore a need for a versatile and robust solution that can relay the
     - Tasker for the BLE frames: https://forum.frandroid.com/topic/69334-tasker-aideinfoscreation-de-profils/page/9/
   - the _babyservers_ should relay the BLE frames
 
-## 6. Relay the sounds/alarms to a DECT
+## 6. Relay the sounds/alarms to a DECT <a name="dect"></a>
   - would involve a SIP connection to the phone network of the hospital
   - use ASTERISK?
   - may play a soud describingg the alarm
 
-## 7. Finalisation
+## 7. Finalisation <a name="final"></a>
 
 ### 7.1. Keepalive
   - send a BLE frame every 10 seconds
@@ -269,7 +269,7 @@ There is therefore a need for a versatile and robust solution that can relay the
 
 ### 7.2. Autoload on boot
 
-## _Other references_
+## Other references <a name="refs"></a>
 
   - FFMPEG streaming: https://trac.ffmpeg.org/wiki/StreamingGuide, https://www.raspberrypi.org/forums/viewtopic.php?t=226843, http://sharonleal.me/, http://iltabiai.github.io/2018/03/17/rpi-stream.html, https://blog.tremplin.ens-lyon.fr/GerardVidal/faire-du-streaming-live-avec-une-raspberry-pi-et-les-ressources-de-lens-ife.html, https://raspberrypi.stackexchange.com/questions/32677/setup-microphone-stream-and-turn-your-raspberry-pi-into-a-baby-phone
   - VLC: https://www.videolan.org/streaming-features.html
