@@ -1,4 +1,4 @@
-# ICU babyphone-inspired alarm network
+# Intensive Care Unit Alarm Network
 
 _**Relieve ICU staff** through a Wifi network that transmits **identifiable monitoring alarms** to **multiple** displays, dedicated smartphones, DECTs, or any computer._
 
