@@ -1,6 +1,6 @@
 # ICU babyphone-inspired network
 
-_**Relieve ICU staff** through a Wifi network that transmits **dentifiable monitoring alarms** to **multiple** displays, dedicated smartphones, DECTs, or any computer._
+_**Relieve ICU staff** through a Wifi network that transmits **identifiable monitoring alarms** to **multiple** displays, dedicated smartphones, DECTs, or any computer._
 
 **Motivation**: during the Covid-19 crisis, temporary intensive care units (ICU) with isolated rooms have been created and equipped with biomedical equipment (monitoring, ECMOs, ...). These devices fire alarms, but often the sound cannot be heard outside the room. Because of the temporary nature of the rooms, the devices are not linked to a central desk like in established ICU. When there is a central desk, no nurse is available to check it. 
 
