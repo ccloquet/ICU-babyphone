@@ -304,7 +304,7 @@ There is therefore a need for a versatile and robust solution that can relay the
   - BLE: https://www.argenox.com/library/bluetooth-low-energy/using-raspberry-pi-ble/
   - WebRTC Streaming: https://github.com/kclyu/rpi-webrtc-streamer
   - usb audio: https://www.seeedstudio.com/blog/2019/08/08/how-to-use-usb-mini-microphone-on-raspberry-pi-4/, https://iotbytes.wordpress.com/connect-configure-and-test-usb-microphone-and-speaker-with-raspberry-pi/, https://raspberrytips.com/add-microphone-raspberry-pi/
-  
+- video : https://wouterdeschuyter.be/blog/creating-a-15-dollar-web-controllable-camera-with-raspberry-pi-zero, https://www.ebay.fr/itm/Mini-Webcam-USB-compatible-Raspberry-WindowsTM-1702Z-/183932969328  
   
 (note:it seems that the screen connected to the pi should not be hi-res otherwise risk of Radio Interference with Wifi?)
 
