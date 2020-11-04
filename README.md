@@ -6,7 +6,7 @@ _**Relieve ICU staff** through a Wifi network that transmits **identifiable moni
 
 Sometimes, babyphones are used to transmit the alarms from the room, but they cannot be carried by several people at a time, they are too far to be heard and their alarms are not specific: it is often difficult to distinguish which device is ringing, and that causes either losses of time and energy for the staff (false positives), or degraded care to the patients (false negatives).
 
-There is therefore a need for a versatile and robust solution that can relay the alarms of any biomedical device and specify which device is ringing. The following solution is based on a set of Raspberry Pi devices. The distinction between different alarms/devices is done through attaching **one microphone per device**, and through the **frequency analysis** of the sounds, when each alarm has a different sound.
+There is therefore a need for a versatile and robust solution that can relay the alarms of any biomedical device and specify which device is ringing. The following solution is based on a set of Raspberry Pi devices. The distinction between different alarms/devices is done through attaching **one microphone per device**, and through the **frequency analysis** of the sounds, when each alarm has a different sound spectrum.
 
 
 **Proposed solution** (_work in progress - to be adapted to the reality of the field - Let's collaborate! Feel free to discuss it in the issues_)
