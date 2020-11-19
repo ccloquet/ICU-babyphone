@@ -45,7 +45,7 @@ There is therefore a need for a versatile and robust solution that can relay the
 ## 1. Material <a name="material"></a>
   - let n<sub>m</sub> be the number of microphones (_babymikeXXX_), n<sub>s</sub> be the number of servers (_babyserverXXX_), n<sub>r</sub> the number of receivers (_babyreceiverXXX_), and n<sub>tot</sub> = n<sub>m</sub> + n<sub>s</sub> + n<sub>a</sub>.
   - then you need:
-    - n<sub>tot</sub> Raspberry Pi 4
+    - n<sub>tot</sub> Raspberry Pi 4 [eg, here (MC-HOBBY)](https://shop.mchobby.be)
     - n<sub>tot</sub> official Raspberry Pi alim (3A)
     - n<sub>tot</sub> Kingston 32 Gb class-10 micro SD card
     - n<sub>tot</sub> Raspberry Pi case
